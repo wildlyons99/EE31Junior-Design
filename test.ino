@@ -15,15 +15,15 @@ void fade(int p, int delay, int &brightness, int &fadeAmount) {
       fadeAmount = -fadeAmount;
     }
     // wait for 30 milliseconds to see the dimming effect
-    delay(300);
+    delay(delay);
 }
 
 int timed = 1000; // in ms
 void setup() {
     // set pinout up for LED, just 1 pin
+    pinMode(9, OUTPUT);
+    pinMode(10, OUTPUT);
     pinMode(11, OUTPUT);
-    pinMode(12, OUTPUT);
-    pinMode(13, OUTPUT);
 }
 
 int num = 5;
@@ -37,5 +37,5 @@ void loop() {
     // digitalWrite(13, HIGH);
     // delay(timed);
 
-    fade(13, brightness, num);
+    fade(11, 30, brightness, num);
 }
