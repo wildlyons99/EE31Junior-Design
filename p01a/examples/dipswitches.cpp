@@ -30,17 +30,16 @@ void setup() {
     pinMode(dip1, INPUT_PULLUP);
     pinMode(dip2, INPUT_PULLUP);
     pinMode(dip3, INPUT_PULLUP);
+    pinMode(redPin, OUTPUT);
+    pinMode(greenPin, OUTPUT);
+    pinMode(bluePin, OUTPUT);
     attachInterrupt(digitalPinToInterrupt(dip1), redblink, CHANGE);
     attachInterrupt(digitalPinToInterrupt(dip2), greenblink, CHANGE);
     attachInterrupt(digitalPinToInterrupt(dip3), blueblink, CHANGE);
 }
 
 void loop() {
-    volatile int redvalue = redstate ? 0 : 255;
-    volatile int greenvalue = greenstate ? 0 : 255;
-    volatile int bluevalue = bluestate ? 0 : 255;
-    analogWrite(redPin, redvalue);          // Using analogWrite for PWM pin?
-    analogWrite(greenPin, greenvalue);
-    analogWrite(bluePin, bluevalue);
-
+    digitalWrite(redPin, redstate);
+    digitalWrite(greenPin, greenstate);
+    digitalWrite(bluePin, bluestate);
 }
