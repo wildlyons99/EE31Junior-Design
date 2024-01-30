@@ -1,3 +1,5 @@
+//sysrtem does 
+
 #include <Arduino.h>
 
 const int redLED = 9;
@@ -23,35 +25,32 @@ const int potentiometer1pin = A0;
 const int potentiometer2pin = A1;
 
 int brightness = 255;            // how bright the LED is
-int flashPattern = 0;
+int flashPattern;
 
+// Function for interrupt attached to DIP switch 2, changes global var. blueRun
 void switch1() {
     blueRun = !blueRun;
 }
 
+// Function for interrupt attached to DIP switch 2, changes global var. redRun
 void switch2() {
     redRun = !redRun;
 }
 
+// Function for interrupt attached to DIP switch 3, changes global var. runSleep
 void switch3() {
   runSleep = !runSleep;
 }
 
+// Function for interrupt attached to DIP switch 4, changes global var. onOff
 void switch4() {
   onOff = !onOff;
 }
 
-void potentiometer1(){
 
-}
-
-void potentiometer2(){
-    
-}
-
-
-//    on state 
-//    blinks 10 times and pauses 
+//  For the ON state.
+//  Blinks redLED 5 times (ON/OFF), uses delay as no other functions should be
+//  running at the same time as this status indicator, only sequentially.
 void on(){
     for(int i = 0; i < 10; i++){
         digitalWrite(redLED, HIGH);
@@ -62,8 +61,10 @@ void on(){
     delay(2000);
 }
 
-//    diagnostic state
-//    blinks n times for n list of problems 
+//    For the DIAGNOSTIC state.
+//    Blinks n times for n list of problems, indicated by...
+//      arguments: errorCode
+//    (true functionality not yet implemented, no real error checking yet)
 void diagnostic(int errorCode){
     for(int i = 0; i < errorCode; i++){
         digitalWrite(redLED, HIGH);
@@ -88,13 +89,13 @@ bool fade(unsigned long &lastFade, int pin, int time_delay){
     // to the current time (ms) is valid. Hardcoded "steps" is from full
     // bright to dark is 100.
     if(millis() - lastFade >= time_delay / 100){
-        currBrightness -= (float) brightness / 100;
+        currBrightness -= (float) 255 / 100;
         analogWrite(pin, currBrightness);
         lastFade = millis();
     }
     // Returns true if the fade is completed.
     if(currBrightness <= 0){
-        currBrightness = brightness;
+        currBrightness = 255;
         return true;
     }
     return false;
@@ -113,7 +114,7 @@ void sleep(unsigned long &last, bool &blueLEDState, int &blinkOrFade){
     if(blinkOrFade < 6){
         if(millis() - last >= 125){
             blueLEDState = !blueLEDState; // Toggle the LED from On to Off
-            analogWrite(blueLED, blueLEDState * brightness);
+            digitalWrite(blueLED, blueLEDState);
             last = millis();
             blinkOrFade++;
         }
@@ -129,20 +130,36 @@ void sleep(unsigned long &last, bool &blueLEDState, int &blinkOrFade){
 
 bool greenBlinkState = 0;
 bool greenLEDState = 0;
-int greenLast = 0;
 int greenCount = 0;
 
-int blueLast = 0;
+unsigned long greenLast = 0;
+unsigned long blueLast = 0;
 
-void run(){
-
+/*
+ * name:      run
+ * purpose:   Performs the run state functionality, which does the following:
+ *              - Turns on the green LED and fades it over 6 sec.
+ *              - Then blinks green LED twice, duty cycle lasting 0.5 sec
+ *              - Blue LED will flash at a rate of either 10hz or 1hz, changed
+                  by the variable blueRun (interrupt controlled)
+                - Red LED is controlled by redRun (interrupt controlled)
+ *
+ * arguments: &greenLast, to track the time delta between each run() call
+              &blueLast, ditto fucntionality but for blueLED
+              &greenLEDState, bool that tracks if the LED is ON/OFF
+ *
+ * returns:   none
+ * effects:   By reference, &greenLast, &blueLast, &greenLEDState
+ */
+void run(unsigned long &greenLast, unsigned long &blueLast, bool &greenLEDState){
+    // Checking if the green LED is ON
     if(greenBlinkState){
-        if(millis() - greenLast >= 250){
+        if(millis() - greenLast >= 250){ // 
             greenLEDState = !greenLEDState; 
-            analogWrite(greenLED, greenLEDState * brightness);
+            digitalWrite(greenLED, greenLEDState);
             greenLast = millis();
             greenCount++;
-            Serial.println("green switch");
+
         }
 
         if(greenCount > 4){
@@ -174,7 +191,7 @@ void run(){
     }
 
     if(redRun and blueRun){
-        analogWrite(redLED, brightness);
+        digitalWrite(redLED, HIGH);
     } 
 
     if(!blueRun){
@@ -231,8 +248,8 @@ void setup()
 void loop()
 {
     brightness = map(analogRead(A0), 0, 673, 0, 255);
-    flashPattern = analogRead(A1);
-    Serial.println(brightness);
+    flashPattern = map(analogRead(A1), 0, 673, 1, 10);
+    Serial.println(flashPattern);
 
     switch(state) {
         case OFF:
@@ -265,7 +282,7 @@ void loop()
             if(runSleep == LOW){
                 state = SLEEP; 
             }
-            run();
+            run(greenLast, blueLast, greenLEDState);
             break; 
     }
 
