@@ -25,11 +25,17 @@ const int potentiometer1pin = A0;
 const int potentiometer2pin = A1;
 
 int brightness = 255;            // how bright the LED is
-int flashPattern;
+int flashPattern;                // blue LED frequency control from pot2
+int lastFlashPattern;        
+bool patternMode;                // high wehn potentiometer is controlling
+                                 // blue LED pattern, low for 
+int bluePeriod = 500;            // Represents the period of the blueLED when 
+                                 // potentiometer is controlling it 
 
 // Function for interrupt attached to DIP switch 2, changes global var. blueRun
 void switch1() {
     blueRun = !blueRun;
+    patternMode = false;
 }
 
 // Function for interrupt attached to DIP switch 2, changes global var. redRun
@@ -174,16 +180,24 @@ void run(unsigned long &greenLast, unsigned long &blueLast, bool &greenLEDState)
         } 
     }
 
-
-
-    if(blueRun){
-        if (abs(millis() - blueLast) >= 50) {
-            blueLEDState = !blueLEDState;
-            analogWrite(blueLED, blueLEDState * brightness);
-            blueLast = millis();
+    //switch is controlling between 1 and 10 Hz blue LED
+    if(patternMode == false){
+        if(blueRun){
+            if (abs(millis() - blueLast) >= 50) {
+                blueLEDState = !blueLEDState;
+                analogWrite(blueLED, blueLEDState * brightness);
+                blueLast = millis();
+            }
+        } else {
+            if (abs(millis() - blueLast) >= 500) {
+                blueLEDState = !blueLEDState;
+                analogWrite(blueLED, blueLEDState * brightness);
+                blueLast = millis();
+            }
         }
     } else {
-        if (abs(millis() - blueLast) >= 500) {
+        //potentiometer is controlling blue LED flash pattern
+        if (abs(millis() - blueLast) >= bluePeriod) {
             blueLEDState = !blueLEDState;
             analogWrite(blueLED, blueLEDState * brightness);
             blueLast = millis();
@@ -223,7 +237,6 @@ void attachingInterrupts(){
 }
 
 enum states {OFF, ON, DIAGNOSTIC, SLEEP, RUN}; 
-
 enum states state; 
 
 void setup()
@@ -239,18 +252,23 @@ void setup()
     redRun = !digitalRead(switch2pin);
     onOff = !digitalRead(switch4pin);
     runSleep = !digitalRead(switch3pin);
-
-
-    //enum states state = onOff ? ON : OFF; 
 }
 
 // execute state machine functionality
 void loop()
 {
+    // reads and maps potentiometer values
     brightness = map(analogRead(A0), 0, 673, 0, 255);
     flashPattern = map(analogRead(A1), 0, 673, 1, 10);
-    Serial.println(flashPattern);
 
+    // updates flash pattern when changed
+    if(flashPattern != lastFlashPattern){
+        patternMode = true;
+        bluePeriod = 500 / flashPattern; 
+    }
+    lastFlashPattern = flashPattern;
+
+    // command loop 
     switch(state) {
         case OFF:
             digitalWrite(redLED, 0);
