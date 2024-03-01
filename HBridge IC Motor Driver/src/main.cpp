@@ -6,7 +6,17 @@
 
 #include <Arduino.h>
 
+void go_forward(); 
+void go_backwards(); 
+void go_right(); 
+void go_left(); 
+void stop_all(); 
+
+
 // PWM pin options: 3, 5, 6, 9, 10 and 11
+
+// A is right
+// B is left 
  
 // Motor A connections
 const int enableA = 9; // pwm pin
@@ -20,8 +30,8 @@ const int motorB2 = 8;
  
 // Set the speed (0 = off and 255 = max speed)
 // will likely need to make seperate motor speed for A and B to match so: 
-const int motorSpeedA = 128; // 50% duty cycle 
-const int motorSpeedB = 128; // 50% duty cycle 
+const int motorSpeedA = 135; // 50% duty cycle 
+const int motorSpeedB = 120; // 50% duty cycle 
  
 void setup() {
     // Set motor control pins to outputs
@@ -48,17 +58,17 @@ void loop() {
     go_forward();
     delay(3000);
     
-    // Go backwards
-    go_backwards();
-    delay(3000);
+    // // Go backwards
+    // go_backwards();
+    // delay(3000);
     
-    // Go right
-    go_right();
-    delay(3000);
+    // // Go right
+    // go_right();
+    // delay(3000);
     
-    // Go left
-    go_left();
-    delay(3000);
+    // // Go left
+    // go_left();
+    // delay(3000);
     
     // Stop
     stop_all();
