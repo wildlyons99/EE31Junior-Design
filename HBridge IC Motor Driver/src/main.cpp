@@ -6,10 +6,10 @@
 
 #include <Arduino.h>
 
-void go_forward(); 
-void go_backwards(); 
-void go_right(); 
-void go_left(); 
+void go_forward(int delay_time); 
+void go_backwards(int delay_time); 
+void go_right(int delay_time); 
+void go_left(int delay_time); 
 void stop_all(); 
 
 
@@ -30,8 +30,17 @@ const int motorB2 = 8;
  
 // Set the speed (0 = off and 255 = max speed)
 // will likely need to make seperate motor speed for A and B to match so: 
-const int motorSpeedA = 135; // 50% duty cycle 
-const int motorSpeedB = 120; // 50% duty cycle 
+const int forwardMotorSpeedA = 70; // 50% duty cycle 
+const int forwardMotorSpeedB = 90; // 50% duty cycle 
+
+
+const int turnRightMotorSpeedA = 74; // 50% duty cycle 
+const int turnRightMotorSpeedB = 98; // 50% duty cycle 
+
+// A is right
+// B is left 
+const int backwardMotorSpeedA = 64; 
+const int backwardMotorSpeedB = 57; 
  
 void setup() {
     // Set motor control pins to outputs
@@ -48,62 +57,90 @@ void setup() {
     digitalWrite(motorB1, LOW);
     digitalWrite(motorB2, LOW);
     
-    // Set the motor speed with enable PWM 
-    analogWrite(enableA, motorSpeedA); 
-    analogWrite(enableB, motorSpeedB); 
+    
 }
  
 void loop() {
+
     // Go forwards
-    go_forward();
-    delay(3000);
+    go_forward(3000);
+
+    delay(1000); 
     
-    // // Go backwards
-    // go_backwards();
-    // delay(3000);
+    // Go backwards
+    go_backwards(3000);
+
+    delay(1000); 
     
-    // // Go right
-    // go_right();
-    // delay(3000);
+    // Go right
+    go_right(775);
+
+    delay(1000); 
     
     // // Go left
-    // go_left();
-    // delay(3000);
-    
-    // Stop
-    stop_all();
-    delay(3000);
+    go_left(860);
+
+    delay(3000); 
 }
  
 /*   
  *  Forwards, backwards, right, left, stop.
  */
-void go_forward() {
+void go_forward(int delay_time) {
+    // Set the motor speed with enable PWM 
+    analogWrite(enableA, forwardMotorSpeedA); 
+    analogWrite(enableB, forwardMotorSpeedB); 
+    delay(10); 
+
     digitalWrite(motorA1, HIGH);
     digitalWrite(motorA2, LOW);
     digitalWrite(motorB1, HIGH);
     digitalWrite(motorB2, LOW);
+
+    delay(delay_time); 
+    stop_all(); 
 }
 
-void go_backwards() {
+void go_backwards(int delay_time) {
+    analogWrite(enableA, backwardMotorSpeedA); 
+    analogWrite(enableB, backwardMotorSpeedB); 
+    delay(10);
+
     digitalWrite(motorA1, LOW);
     digitalWrite(motorA2, HIGH);
     digitalWrite(motorB1, LOW);
     digitalWrite(motorB2, HIGH);
+
+    delay(delay_time); 
+    stop_all(); 
 }
 
-void go_right() {
+void go_right(int delay_time) {
+    analogWrite(enableA, turnRightMotorSpeedA); 
+    analogWrite(enableB, turnRightMotorSpeedB); 
+    delay(10);
+
     digitalWrite(motorA1, HIGH);
     digitalWrite(motorA2, LOW);
     digitalWrite(motorB1, LOW);
     digitalWrite(motorB2, HIGH);
+
+    delay(delay_time); 
+    stop_all(); 
 }
 
-void go_left() {
+void go_left(int delay_time) {
+    analogWrite(enableA, turnRightMotorSpeedA); 
+    analogWrite(enableB, turnRightMotorSpeedB); 
+    delay(10);
+
     digitalWrite(motorA1, LOW);
     digitalWrite(motorA2, HIGH);
     digitalWrite(motorB1, HIGH);
     digitalWrite(motorB2, LOW);
+
+    delay(delay_time); 
+    stop_all(); 
 }
 
 void stop_all() {
