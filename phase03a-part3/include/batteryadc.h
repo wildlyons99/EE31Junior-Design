@@ -7,14 +7,12 @@
 #define RUN_SUCCESS 1
 #define RUN_FAILURE 0
 
-int batterySetup(void);
+int batteryPinSetup(int &pinArray, int numberOfPins);
 
-int readADC(void);
+int readADC(int pinValue, int &adcValue);
 
 double calculateVoltage(int adcValue, double refVoltage);
 
-int publishBattery(double calculatedVoltage, bool alsoPercent);
+int calculateMappedPercent(double calculatedVoltage, double min, double max);
 
-int printBattery(double calculatedVoltage);
-
-int displayBatteryLED(double calculatedVoltage);
+int displayPercentLED(int percent, int &pinArray);
