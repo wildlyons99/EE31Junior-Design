@@ -1,6 +1,6 @@
 /* Authors: Chris Bann and Remy Ren
  *
- * 
+ *
  */
 
 #include <Arduino.h>
@@ -15,7 +15,7 @@ int readADC(int pinValue, int &adcValue);
 
 double calculateVoltage(int adcValue, double refVoltage);
 
-uint8_t calculateMappedPercent(double calculatedVoltage, double min, double max);
+uint8_t calculate5VMappedPercent(double calculatedVoltage);
 
 void displayPercentLED(int percent, int pinArray[]);
 
