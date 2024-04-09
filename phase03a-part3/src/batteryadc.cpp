@@ -1,6 +1,5 @@
 /* Authors: Chris Bann and Remy Ren
  * Library to read the battery percentage value.
- * 
  */
 
 #define RTN_SUCCESS 0
@@ -9,11 +8,22 @@
 #include <Arduino.h>
 
 /// @brief Set all pins to be observed by ADC
-/// @param int &pinArray 
+/// @param int pinArray[]
 /// @param int numberOfPins 
 /// @return int8_t for error checking
-int8_t batteryPinSetup(int &pinArray, int numberOfPins) {
-    for (i = 0; i < numberOfPins; i++) {
+int8_t batteryPinSetup(int pinArray[], int numberOfPins) {
+    for (int i = 0; i < numberOfPins; i++) {
+        pinMode(pinArray[i], INPUT);
+    }
+    return RTN_SUCCESS;
+}
+
+/// @brief Set all pins to be used for LEDs
+/// @param int pinArray[]
+/// @param int numberOfPins 
+/// @return int8_t for error checking
+int8_t pinsLEDSetup(int pinArray[], int numberOfPins) {
+    for (int i = 0; i < numberOfPins; i++) {
         pinMode(pinArray[i], OUTPUT);
     }
     return RTN_SUCCESS;
@@ -44,22 +54,20 @@ double calculateVoltage(int adcValue, double refVoltage) {
     return calculatedVoltage;
 }
 
-
-
 /// @brief Returns the battery percentage from a voltage.
 /// @param double calculatedVoltage
 /// @param double min
 /// @param double max
-/// @return double calculatedVoltage
-int calculateMappedPercent(double calculatedVoltage, double min, double max) {
+/// @return uint8_t percent
+uint8_t calculateMappedPercent(double calculatedVoltage, double min, double max) {
     return map(calculatedVoltage, min, max, 0, 100);
 }
 
 /// @brief  Displays the current battery percentage via 3 LEDs -> Low, Med, High
 /// @param  int percent (0 to 100)
-/// @param  int &pinArray -> [0] Low, [1] Medium, [2] High 
+/// @param  int pinArray[] -> [0] Low, [1] Medium, [2] High 
 /// @return none
-void displayPercentLED(int percent, int &pinArray) {
+void displayPercentLED(int percent, int pinArray[]) {
     // this is stupid, it doesn't run faster but it works.
     // The modulo math will give the LED in 3 stages.
     int pinToWrite = map(percent, 0, 100, 3, 5);
@@ -68,10 +76,24 @@ void displayPercentLED(int percent, int &pinArray) {
     digitalWrite(pinArray[2], !(5 % pinToWrite)); // High
 }
 
-// /// @brief  Sets which LED pins to display battery percent Low, Med, High
-// /// @param  int &pinArray -> [0] Low, [1] Medium, [2] High 
-// /// @param  int numberOfPins
-// /// @return none
-// void displayPercentLED() {
+/// @brief  Get and return the battery percentage.
+/// @param  int pinADC, of the ADC pin you wish to read
+/// @param  int pinsLED[] -> [0] Low, [1] Medium, [2] High 
+/// @return uint8_t percent
+uint8_t getPercent(double min, double max, int pinADC) {
+    int adcValue = 0;
+    readADC(pinADC, adcValue);
+    double calculatedVoltage = calculateVoltage(adcValue, 9.0); // Assuming 9.0V ref. voltage.
+    int percent = calculateMappedPercent(calculatedVoltage, min, max);
+    return percent;
+}
 
-// } 
+/// @brief  Get and display battery percentage via LED for a particular pin.
+/// @param  int pinADC, of the ADC pin you wish to read
+/// @param  int pinsLED[] -> [0] Low, [1] Medium, [2] High 
+/// @return uint8_t percent
+uint8_t getPercentDisplayLED(double min, double max, int pinADC, int pinsLED[]) {
+    int percent = getPercent(min, max, pinADC);
+    displayPercentLED(percent, pinsLED);
+    return percent;
+}
