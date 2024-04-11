@@ -1,6 +1,5 @@
 /* Authors: Chris Bann and Remy Ren
- *
- *
+ * Library to read the battery percentage value.
  */
 
 #include <Arduino.h>

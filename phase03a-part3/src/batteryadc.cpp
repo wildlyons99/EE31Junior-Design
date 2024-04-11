@@ -6,6 +6,7 @@
 #define RTN_FAILURE -1
 
 #include <Arduino.h>
+#include "batteryadc.h"
 
 /// @brief Set all pins to be observed by ADC
 /// @param int pinArray[]
@@ -36,7 +37,7 @@ int8_t pinsLEDSetup(int pinArray[], int numberOfPins)
 /// @brief Reads and gives the ADC value for a pin (A0 to A5)
 /// @param int pinValue
 /// @param int &adcValue
-/// @return integer ADC value
+/// @return success or error (change from C style, bleugh)
 int readADC(int pinValue, int &adcValue)
 {
     adcValue = analogRead(pinValue);
