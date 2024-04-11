@@ -65,16 +65,18 @@ double calculateVoltage(int adcValue, double refVoltage)
 }
 
 /// @brief Returns the battery percentage from a voltage.
-/// @param double calculatedVoltage
 /// @param double min
 /// @param double max
+/// @param double calculatedVoltage
 /// @return uint8_t percent
-uint8_t calculate5VMappedPercent(double calculatedVoltage)
+uint8_t calculate5VMappedPercent(double min, double max, double calculatedVoltage)
 {
+    double relative_min = map(min, 0, 4.9, 0, 9);
+    double relative_max = map(max, 0, 4.9, 0, 9);
     Serial.print("Calculated Voltage Parameter: ");
     Serial.println(calculatedVoltage);
-    int percent = map(calculatedVoltage, 3.14, 4.90, 0, 100);
-    Serial.print("Direct Percet: ");
+    int percent = map(calculatedVoltage, relative_min, relative_max, 0, 100);
+    Serial.print("Direct Percent: ");
     Serial.println(percent);
     return percent;
 }

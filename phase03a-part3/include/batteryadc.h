@@ -15,7 +15,7 @@ int readADC(int pinValue, int &adcValue);
 
 double calculateVoltage(int adcValue, double refVoltage);
 
-uint8_t calculate5VMappedPercent(double calculatedVoltage);
+uint8_t calculate5VMappedPercent(double min, double max, double calculatedVoltage);
 
 void displayPercentLED(int percent, int pinArray[]);
 
