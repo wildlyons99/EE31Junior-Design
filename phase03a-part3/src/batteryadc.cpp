@@ -71,8 +71,13 @@ double calculateVoltage(int adcValue, double refVoltage)
 /// @return uint8_t percent
 uint8_t calculate5VMappedPercent(double min, double max, double calculatedVoltage)
 {
-    double relative_min = map(min, 0, 4.9, 0, 9);
-    double relative_max = map(max, 0, 4.9, 0, 9);
+    double relative_min = map(min, 0, 9.0, 0, 4.9);
+    double relative_max = map(max, 0, 9.0, 0, 4.9);
+    // ㄴㅇㄴ
+    Serial.print("min: ");
+    Serial.print(relative_min);
+    Serial.print(" max: ");
+    Serial.println(relative_max);
     Serial.print("Calculated Voltage Parameter: ");
     Serial.println(calculatedVoltage);
     int percent = map(calculatedVoltage, relative_min, relative_max, 0, 100);
@@ -104,7 +109,7 @@ uint8_t getPercent(double min, double max, int pinADC)
     int adcValue = 0;
     readADC(pinADC, adcValue);
     double calculatedVoltage = calculateVoltage(adcValue, 9.0); // Assuming 9.0V ref. voltage.
-    int percent = calculate5VMappedPercent(calculatedVoltage);
+    int percent = calculate5VMappedPercent(min, max, calculatedVoltage);
     return percent;
 }
 
