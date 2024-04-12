@@ -6,6 +6,10 @@
 		{
 			"name": "Phase 1A - State Machine",
 			"path": "Phase 1A - State Machine"
+		},
+		{
+			"name": "phase04-wifi",
+			"path": "phase04-wifi"
 		}
 	],
     "settings": {}
