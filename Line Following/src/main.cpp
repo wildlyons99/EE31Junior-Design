@@ -15,6 +15,7 @@
 #include "collision_detection.h"
 #include "color_detection.h" 
 #include "motors.h"
+#include "ambient_light.h"
  
 void setup() {
     // Initialialize Pins for Color Detection
@@ -29,9 +30,17 @@ void setup() {
 }
  
 void loop() {
-    char *color_string[] = {"None", "Black", "Blue", "Yellow", "Red"}; 
+    if (daytime()) {
+        Serial.println("Its daytime!"); 
+    } else {
+        Serial.println("It is night.");
+    }
 
-    enum colors color = detectColor();     
+    delay(1000); 
+    
+    // char *color_string[] = {"None", "Black", "Blue", "Yellow", "Red"}; 
+
+    // enum colors color = detectColor();     
 
     // if (!obsticle()) {
     //     drive_forward(); // change so not setting pins each time?? 
