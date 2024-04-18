@@ -12,7 +12,7 @@ int motorPercent = 0;
 int pinLogic = A1;
 int pinMotor = A0;
 int pinsADC[] = {pinLogic, pinMotor};
-int pinsLED[] = {11, 12, 13}; // Replace pins as needed. Low, Med, High.
+int pinsLED[] = {12, 13}; // Replace pins as needed. Low, Med, High.
 
 void setup()
 {

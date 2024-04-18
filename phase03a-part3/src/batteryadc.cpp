@@ -95,10 +95,10 @@ void displayPercentLED(int percent, int pinArray[])
 {
     // this is stupid, it doesn't run faster but it works.
     // The modulo math will give the LED in 3 stages.
-    int pinToWrite = map(percent, 0, 100, 3, 5);
+    int pinToWrite = map(percent, 0, 100, 3, 4);
     digitalWrite(pinArray[0], !(3 % pinToWrite)); // Low
     digitalWrite(pinArray[1], !(4 % pinToWrite)); // Medium
-    digitalWrite(pinArray[2], !(5 % pinToWrite)); // High
+    // digitalWrite(pinArray[2], !(5 % pinToWrite)); // High
 }
 
 /// @brief  Get and return the battery percentage.
