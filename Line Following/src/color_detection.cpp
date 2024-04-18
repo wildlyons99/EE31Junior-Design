@@ -68,16 +68,21 @@ enum colors detectColor() {
         }
     }
 
-    if(redValue < 1.6 && blueValue < 2.2){
+    if(redValue < 1.6 && blueValue < 1.5){
         currColor = Black;
-    } else if(redValue > 1.6 && redValue < 2.5 && blueValue > 2.2 && blueValue < 3){
+        // Serial.println("BLACK");
+    } else if(redValue > 1.6 && redValue < 3 && blueValue > 2.2 && blueValue < 3){
         currColor = Blue;
-    } else if(redValue > 2.5 && redValue < 4.5 && blueValue > 2.5 && blueValue < 3.5){
+        // Serial.println("BLUE");
+    } else if(redValue > 3 && redValue < 4.5 && blueValue > 2.5 && blueValue < 4.5){
         currColor = Yellow;
-    } else if(redValue > 2.5 && redValue < 4 && blueValue > 1.5 && blueValue < 2.2){
+        // Serial.println("YELLOW");
+    } else if(redValue > 3 && redValue < 4 && blueValue > 1.5 && blueValue < 2.2){
         currColor = Red;
+        // Serial.println("RED");
     } else {
         currColor = None;
+        // Serial.println("NONE");
     }
 
     return currColor;
