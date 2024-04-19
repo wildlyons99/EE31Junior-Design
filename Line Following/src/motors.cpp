@@ -1,23 +1,13 @@
-// main.cpp
-// Tom Lyons
-// 
-// EE31 Junior Design - phase 2B
-// Tufts University 
+/*****************************************************************
+ *                      MOTORS   CODE                            *
+ *****************************************************************/
 
-#include <Arduino.h>
-
-void go_forward(int delay_time); 
-void go_backwards(int delay_time); 
-void go_right(int delay_time); 
-void go_left(int delay_time); 
-void stop_all(); 
-
+#include <motors.h>
 
 // PWM pin options: 3, 5, 6, 9, 10 and 11
-
 // A is right
-// B is left 
- 
+// B is left
+
 // Motor A connections
 const int enableA = 9; // pwm pin
 const int motorA1 = 5;
@@ -41,8 +31,9 @@ const int turnRightMotorSpeedB = 98; // 50% duty cycle
 // B is left 
 const int backwardMotorSpeedA = 64; 
 const int backwardMotorSpeedB = 57; 
- 
-void setup() {
+
+// setup motors
+void setup_motors() {
     // Set motor control pins to outputs
     pinMode(enableA, OUTPUT);
     pinMode(enableB, OUTPUT);
@@ -56,33 +47,8 @@ void setup() {
     digitalWrite(motorA2, LOW);
     digitalWrite(motorB1, LOW);
     digitalWrite(motorB2, LOW);
-    
-    
 }
- 
-void loop() {
 
-    // Go forwards
-    go_forward(3000);
-
-    delay(1000); 
-    
-    // Go backwards
-    go_backwards(3000);
-
-    delay(1000); 
-    
-    // Go right
-    go_right(775);
-
-    delay(1000); 
-    
-    // // Go left
-    go_left(860);
-
-    delay(3000); 
-}
- 
 /*   
  *  Forwards, backwards, right, left, stop.
  */
@@ -101,21 +67,22 @@ void go_forward(int delay_time) {
     stop_all(); 
 }
 
-void go_backwards(int delay_time) {
-    analogWrite(enableA, backwardMotorSpeedA); 
-    analogWrite(enableB, backwardMotorSpeedB); 
-    delay(10);
+/* drive forward
+ * Will drive forward without stopping
+ */
+void drive_forward() {
+    // Set the motor speed with enable PWM 
+    analogWrite(enableA, forwardMotorSpeedA); 
+    analogWrite(enableB, forwardMotorSpeedB); 
+    // delay(10); 
 
-    digitalWrite(motorA1, LOW);
-    digitalWrite(motorA2, HIGH);
-    digitalWrite(motorB1, LOW);
-    digitalWrite(motorB2, HIGH);
-
-    delay(delay_time); 
-    stop_all(); 
+    digitalWrite(motorA1, HIGH);
+    digitalWrite(motorA2, LOW);
+    digitalWrite(motorB1, HIGH);
+    digitalWrite(motorB2, LOW); 
 }
 
-void go_right(int delay_time) {
+void turn_right(int delay_time) {
     analogWrite(enableA, turnRightMotorSpeedA); 
     analogWrite(enableB, turnRightMotorSpeedB); 
     delay(10);
@@ -129,7 +96,7 @@ void go_right(int delay_time) {
     stop_all(); 
 }
 
-void go_left(int delay_time) {
+void turn_left(int delay_time) {
     analogWrite(enableA, turnRightMotorSpeedA); 
     analogWrite(enableB, turnRightMotorSpeedB); 
     delay(10);
