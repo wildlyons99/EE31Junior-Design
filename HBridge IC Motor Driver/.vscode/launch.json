@@ -9,12 +9,31 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "C/C++ Runner: Debug Session",
+            "type": "cppdbg",
+            "request": "launch",
+            "args": [],
+            "stopAtEntry": false,
+            "externalConsole": true,
+            "cwd": ".",
+            "program": "build/Debug/outDebug",
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "/Users/tomlyons/Desktop/JuniorDesign/EE31Junior-Design/HBridge IC Motor Driver/.pio/build/uno_wifi_rev2/firmware.elf",
+            "executable": "c:/Users/Remy R/Documents/College Stuff/ee31/EE31Junior-Design/HBridge IC Motor Driver/.pio/build/uno_wifi_rev2/firmware.elf",
             "projectEnvName": "uno_wifi_rev2",
-            "toolchainBinDir": "/Users/tomlyons/.platformio/packages/toolchain-atmelavr/bin",
+            "toolchainBinDir": "C:/Users/Remy R/.platformio/packages/toolchain-atmelavr/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": {
                 "type": "PlatformIO",
@@ -25,18 +44,18 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "/Users/tomlyons/Desktop/JuniorDesign/EE31Junior-Design/HBridge IC Motor Driver/.pio/build/uno_wifi_rev2/firmware.elf",
+            "executable": "c:/Users/Remy R/Documents/College Stuff/ee31/EE31Junior-Design/HBridge IC Motor Driver/.pio/build/uno_wifi_rev2/firmware.elf",
             "projectEnvName": "uno_wifi_rev2",
-            "toolchainBinDir": "/Users/tomlyons/.platformio/packages/toolchain-atmelavr/bin",
+            "toolchainBinDir": "C:/Users/Remy R/.platformio/packages/toolchain-atmelavr/bin",
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (without uploading)",
-            "executable": "/Users/tomlyons/Desktop/JuniorDesign/EE31Junior-Design/HBridge IC Motor Driver/.pio/build/uno_wifi_rev2/firmware.elf",
+            "executable": "c:/Users/Remy R/Documents/College Stuff/ee31/EE31Junior-Design/HBridge IC Motor Driver/.pio/build/uno_wifi_rev2/firmware.elf",
             "projectEnvName": "uno_wifi_rev2",
-            "toolchainBinDir": "/Users/tomlyons/.platformio/packages/toolchain-atmelavr/bin",
+            "toolchainBinDir": "C:/Users/Remy R/.platformio/packages/toolchain-atmelavr/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "loadMode": "manual"
         }
