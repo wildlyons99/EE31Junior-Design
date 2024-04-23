@@ -1,21 +1,17 @@
+/* 
+ *
+ */
+
 #include <Arduino.h>
+#include "horn_and_lights.h"
 
-const int hornPin = 4; // Output pin for the square wave
-
-void honk(); 
-
-void setup() {
-  pinMode(hornPin, OUTPUT);
-  for (int i = 0; i < 2; i++) {
-    honk();
-  }
+void setup_horn() {
+    pinMode(hornPin, OUTPUT);; 
 }
 
-void loop() {
-  
-}
-
-// honks twice
+/* honk
+ * Purpose: Plays a "honk" sound
+ */ 
 void honk() {
     for (int i = 0; i < 1202; i++) {
         digitalWrite(hornPin, HIGH); // Set the output pin HIGH
@@ -24,4 +20,12 @@ void honk() {
         delayMicroseconds(208); // Delay for half of the square wave period (208 us)
     }
     digitalWrite(hornPin, LOW);
+    delay(100); 
+}
+
+void honk_times(int num_times) {
+    for (int i = 0; i < num_times; i++) {
+        honk(); 
+        delay(100); 
+    }
 }
