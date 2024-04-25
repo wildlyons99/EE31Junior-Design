@@ -1,39 +1,41 @@
 /*****************************************************************
  *                      MOTORS   CODE                            *
  *****************************************************************/
+#include <Arduino.h>
 
 #include <motors.h>
 
+#include "horn_and_lights.h"
 // PWM pin options: 3, 5, 6, 9, 10 and 11
-// A is right
+
+// A is right 
 // B is left
 
 // Motor A connections
 const int enableA = 9; // pwm pin
 const int motorA1 = 5;
 const int motorA2 = 6;
- 
+
 // Motor B connections
 const int enableB = 10; // pwm pin
 const int motorB1 = 7;
 const int motorB2 = 8;
- 
+
 // Set the speed (0 = off and 255 = max speed)
-// will likely need to make seperate motor speed for A and B to match so: 
-const int forwardMotorSpeedA = 70; // 50% duty cycle 
-const int forwardMotorSpeedB = 90; // 50% duty cycle 
+// will likely need to make seperate motor speed for A and B to match so:
+const int forwardMotorSpeedA = 68; // 50% duty cycle
+const int forwardMotorSpeedB = 70; // 50% duty cycle
 
-
-const int turnRightMotorSpeedA = 74; // 50% duty cycle 
-const int turnRightMotorSpeedB = 98; // 50% duty cycle 
+const int turnRightMotorSpeedA = 65; // 50% duty cycle
+const int turnRightMotorSpeedB = 70; // 50% duty cycle
 
 // A is right
-// B is left 
-const int backwardMotorSpeedA = 64; 
-const int backwardMotorSpeedB = 57; 
+// B is left
+const int backwardMotorSpeedA = 65;
+const int backwardMotorSpeedB = 70;
 
-// setup motors
-void setup_motors() {
+void setup_motors()
+{
     // Set motor control pins to outputs
     pinMode(enableA, OUTPUT);
     pinMode(enableB, OUTPUT);
@@ -41,30 +43,12 @@ void setup_motors() {
     pinMode(motorA2, OUTPUT);
     pinMode(motorB1, OUTPUT);
     pinMode(motorB2, OUTPUT);
-    
+
     // Set motors off for initial state
     digitalWrite(motorA1, LOW);
     digitalWrite(motorA2, LOW);
     digitalWrite(motorB1, LOW);
     digitalWrite(motorB2, LOW);
-}
-
-/*   
- *  Forwards, backwards, right, left, stop.
- */
-void go_forward(int delay_time) {
-    // Set the motor speed with enable PWM 
-    analogWrite(enableA, forwardMotorSpeedA); 
-    analogWrite(enableB, forwardMotorSpeedB); 
-    delay(10); 
-
-    digitalWrite(motorA1, HIGH);
-    digitalWrite(motorA2, LOW);
-    digitalWrite(motorB1, HIGH);
-    digitalWrite(motorB2, LOW);
-
-    delay(delay_time); 
-    stop_all(); 
 }
 
 /* drive forward
@@ -76,29 +60,16 @@ void drive_forward() {
     analogWrite(enableB, forwardMotorSpeedB); 
     // delay(10); 
 
-    digitalWrite(motorA1, HIGH);
-    digitalWrite(motorA2, LOW);
+    digitalWrite(motorA1, LOW);
+    digitalWrite(motorA2, HIGH);
     digitalWrite(motorB1, HIGH);
     digitalWrite(motorB2, LOW); 
 }
 
-void turn_right(int delay_time) {
-    analogWrite(enableA, turnRightMotorSpeedA); 
-    analogWrite(enableB, turnRightMotorSpeedB); 
-    delay(10);
-
-    digitalWrite(motorA1, HIGH);
-    digitalWrite(motorA2, LOW);
-    digitalWrite(motorB1, LOW);
-    digitalWrite(motorB2, HIGH);
-
-    delay(delay_time); 
-    stop_all(); 
-}
-
-void turn_left(int delay_time) {
-    analogWrite(enableA, turnRightMotorSpeedA); 
-    analogWrite(enableB, turnRightMotorSpeedB); 
+void go_forward(int delay_time)
+{
+    analogWrite(enableA, forwardMotorSpeedA);
+    analogWrite(enableB, forwardMotorSpeedB);
     delay(10);
 
     digitalWrite(motorA1, LOW);
@@ -106,11 +77,57 @@ void turn_left(int delay_time) {
     digitalWrite(motorB1, HIGH);
     digitalWrite(motorB2, LOW);
 
-    delay(delay_time); 
-    stop_all(); 
+    delay(delay_time);
+    stop_all();
 }
 
-void stop_all() {
+void go_backwards(int delay_time)
+{
+    analogWrite(enableA, backwardMotorSpeedA);
+    analogWrite(enableB, backwardMotorSpeedB);
+    delay(10);
+
+    digitalWrite(motorA1, HIGH);
+    digitalWrite(motorA2, LOW);
+    digitalWrite(motorB1, LOW);
+    digitalWrite(motorB2, HIGH);
+
+    delay(delay_time);
+    stop_all();
+}
+
+void turn_right(int delay_time)
+{
+    analogWrite(enableA, turnRightMotorSpeedA);
+    analogWrite(enableB, turnRightMotorSpeedB);
+    delay(10);
+
+    digitalWrite(motorA1, LOW);
+    digitalWrite(motorA2, HIGH);
+    digitalWrite(motorB1, LOW);
+    digitalWrite(motorB2, HIGH);
+
+    delay(delay_time);
+    stop_all();
+}
+
+void turn_left(int delay_time)
+{
+    analogWrite(enableA, turnRightMotorSpeedA);
+    analogWrite(enableB, turnRightMotorSpeedB);
+    delay(10);
+
+    digitalWrite(motorA1, HIGH);
+    digitalWrite(motorA2, LOW);
+    digitalWrite(motorB1, HIGH);
+    digitalWrite(motorB2, LOW);
+
+    delay(delay_time);
+    stop_all();
+}
+
+void stop_all()
+{
     digitalWrite(motorA1, LOW);
     digitalWrite(motorA2, LOW);
     digitalWrite(motorB1, LOW);

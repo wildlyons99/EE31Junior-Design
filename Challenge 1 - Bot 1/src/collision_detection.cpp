@@ -7,9 +7,10 @@
 
 // Collision dectection indo 
 const float ADC_RESOLUTION = 5.0 / 1023.0; 
-#define COLLISION_PIN A1
+#define COLLISION_PIN A5
 
 // may need to be changed with reflective serface 
+ const float THREE_INCH_VOLTAGE = 2.0;
 const float TWO_INCH_VOLTAGE = 2.4; 
 const float ONE_5_INCH_VOLTAGE = 3.5; 
 const float ONE_INCH_VOLTAGE = 4.00; 
@@ -24,14 +25,14 @@ const float ONE_INCH_VOLTAGE = 4.00;
  *      Currently configured for 1.5 inches from the wall
  */ 
 bool obsticle() {
-    int sensorValue = analogRead(A1); // Read the analog voltage value from pin A1
+    int sensorValue = analogRead(COLLISION_PIN); // Read the analog voltage value from pin A1
     float voltage = sensorValue * ADC_RESOLUTION; 
 
-    Serial.print(F("Senor value: ")); Serial.println(sensorValue); 
-    Serial.print(F("Voltage value: ")); Serial.println(voltage); 
+    // Serial.print(F("Senor value: ")); Serial.println(sensorValue); 
+    // Serial.print(F("Voltage value: ")); Serial.println(voltage); 
 
-    if (voltage >= ONE_5_INCH_VOLTAGE) {
-        Serial.println("Collision Detected"); 
+    if (voltage >= THREE_INCH_VOLTAGE) {
+        // Serial.println("Collision Detected"); 
         return true; 
     } else {
         return false; 
