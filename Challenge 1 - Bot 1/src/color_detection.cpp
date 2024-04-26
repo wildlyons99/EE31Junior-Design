@@ -49,7 +49,7 @@ enum colors detectColor() {
             digitalWrite(redLED, LOW);
             digitalWrite(blueLED, HIGH);
 
-                    delay(20);
+            delay(20);
 
             //read blue value
             blueValue = analogRead(colorRead);
@@ -67,6 +67,10 @@ enum colors detectColor() {
             redValue = redValue / 1023 * 5;
         }
     }
+
+    Serial.print("Analog Red: "); Serial.print(redValue); 
+    Serial.print("                   Analog Blue: "); Serial.println(blueValue); 
+
 
     if(redValue < 1.6 && blueValue < 1.5){
         currColor = Black;

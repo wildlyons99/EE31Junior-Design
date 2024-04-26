@@ -7,7 +7,7 @@
 #include "collision_detection.h"
 #include "color_detection.h"
 
-const int turn_right_180 = 200; 
+const int turn_right_180 = 1300; 
 
 
 void setup() {
