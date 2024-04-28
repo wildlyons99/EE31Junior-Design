@@ -10,7 +10,7 @@ const int blueRedFreq = 50;
 // Pin Values
 int redLED = 3;
 int blueLED = 2;
-#define colorRead A3
+#define colorRead A5
 
 float blueValue = 0.0;
 float redValue = 0.0;

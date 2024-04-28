@@ -7,7 +7,7 @@
 
 // Collision dectection indo 
 const float ADC_RESOLUTION = 5.0 / 1023.0; 
-#define COLLISION_PIN A5
+#define COLLISION_PIN A4
 
 // may need to be changed with reflective serface 
  const float THREE_INCH_VOLTAGE = 2.0;
