@@ -15,7 +15,7 @@ void loop() {
     while (millis() - now <= 20000) {
         go_forward(150); 
 
-        delay(100); 
+        delay(75); 
     }
 
     while(1); 
