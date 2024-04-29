@@ -1,5 +1,5 @@
 #ifndef __COLOR_DETECTION__
-#define __COLOR_DETETCION__
+#define __COLOR_DETECTION__
 
 enum colors {None, Black, Blue, Yellow, Red};
 

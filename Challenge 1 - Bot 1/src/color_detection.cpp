@@ -8,8 +8,8 @@
 const int blueRedFreq = 50;
 
 // Pin Values
-int redLED = 3;
-int blueLED = 2;
+int redLED = 7;
+int blueLED = 8;
 #define colorRead A5
 
 float blueValue = 0.0;
@@ -44,28 +44,32 @@ enum colors detectColor() {
         LEDstate = !LEDstate;
 
         //flip LED
-        if(LEDstate){
+        // if(LEDstate){
             //blue is high, red is low
             digitalWrite(redLED, LOW);
             digitalWrite(blueLED, HIGH);
 
-            delay(20);
+            delay(50);
 
             //read blue value
             blueValue = analogRead(colorRead);
             blueValue = blueValue / 1023 * 5;
 
-        } else {
+        // } else {
             //blue is low, red is high
             digitalWrite(blueLED, LOW);
             digitalWrite(redLED, HIGH);
 
-            delay(20);
+            delay(50);
             
             //read red value
             redValue = analogRead(colorRead);
             redValue = redValue / 1023 * 5;
-        }
+
+            // turn both leds off
+            digitalWrite(blueLED, LOW);
+            digitalWrite(redLED, LOW);
+        // }
     }
 
     Serial.print("Analog Red: "); Serial.print(redValue); 
@@ -75,13 +79,13 @@ enum colors detectColor() {
     if(redValue < 1.6 && blueValue < 1.5){
         currColor = Black;
         // Serial.println("BLACK");
-    } else if(redValue > 1.6 && redValue < 3 && blueValue > 2.2 && blueValue < 3){
+    } else if(redValue >= 1.6 && redValue <= 3 && blueValue >= 2.2 && blueValue <= 3){
         currColor = Blue;
         // Serial.println("BLUE");
-    } else if(redValue > 3 && redValue < 4.5 && blueValue > 2.5 && blueValue < 4.5){
+    } else if(redValue >= 3 && redValue < 4.5 && blueValue >= 2.5 && blueValue <= 4.5){
         currColor = Yellow;
         // Serial.println("YELLOW");
-    } else if(redValue > 3 && redValue < 4 && blueValue > 1.5 && blueValue < 2.2){
+    } else if(redValue >= 3 && redValue <= 4 && blueValue >= 1.4 && blueValue <= 2.2){
         currColor = Red;
         // Serial.println("RED");
     } else {

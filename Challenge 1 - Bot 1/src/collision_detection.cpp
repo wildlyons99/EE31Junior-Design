@@ -10,7 +10,7 @@ const float ADC_RESOLUTION = 5.0 / 1023.0;
 #define COLLISION_PIN A4
 
 // may need to be changed with reflective serface 
- const float THREE_INCH_VOLTAGE = 2.0;
+const float THREE_INCH_VOLTAGE = 2.0;
 const float TWO_INCH_VOLTAGE = 2.4; 
 const float ONE_5_INCH_VOLTAGE = 3.5; 
 const float ONE_INCH_VOLTAGE = 4.00; 
@@ -22,7 +22,7 @@ const float ONE_INCH_VOLTAGE = 4.00;
  * Returns: 
  *      Whether or not an obstacle is detected in front of the bot
  * Notes:
- *      Currently configured for 1.5 inches from the wall
+ *      Currently configured for 3 inches from the wall
  */ 
 bool obsticle() {
     int sensorValue = analogRead(COLLISION_PIN); // Read the analog voltage value from pin A1

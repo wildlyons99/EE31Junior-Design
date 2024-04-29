@@ -5,20 +5,31 @@
 #include <Arduino.h>
 #include "horn_and_lights.h"
 
-const int left_blinker = 2; 
+const int headlights = 1; 
+const int brake = 2; 
+
 const int right_blinker = 3; 
+const int left_blinker = 4;  
 
 void setup_horn() {
-    pinMode(hornPin, OUTPUT);; 
+    pinMode(hornPin, OUTPUT);
 }
 
 void setup_lights() {
-    pinMode(left_blinker, OUTPUT); 
+    pinMode(headlights, OUTPUT);
+    pinMode(brake, OUTPUT);
     pinMode(right_blinker, OUTPUT);
+    pinMode(left_blinker, OUTPUT);
 
     digitalWrite(left_blinker, LOW); 
     digitalWrite(right_blinker, LOW); 
+    digitalWrite(brake, LOW); 
+    digitalWrite(headlights, LOW); 
 }
+
+/* blink_left 
+ * blinks the left LED while 
+ */
 
 /* honk
  * Purpose: Plays a "honk" sound
