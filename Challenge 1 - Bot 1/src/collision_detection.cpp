@@ -15,6 +15,8 @@ const float TWO_INCH_VOLTAGE = 2.4;
 const float ONE_5_INCH_VOLTAGE = 3.5; 
 const float ONE_INCH_VOLTAGE = 4.00; 
 
+const float bigger = 1.2;
+
 
 /* obsticle
  * Purpose: 
@@ -31,7 +33,7 @@ bool obsticle() {
     // Serial.print(F("Senor value: ")); Serial.println(sensorValue); 
     // Serial.print(F("Voltage value: ")); Serial.println(voltage); 
 
-    if (voltage >= THREE_INCH_VOLTAGE) {
+    if (voltage >= bigger) {
         // Serial.println("Collision Detected"); 
         return true; 
     } else {

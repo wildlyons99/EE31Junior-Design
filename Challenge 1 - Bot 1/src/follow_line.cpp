@@ -14,34 +14,34 @@
 #include "color_detection.h"
 #include "motors.h"
 
+// update values accordingly
+const int turn_speed = 65; 
+
+/* follow line
+ * Purpose:   
+ *      follow a line
+ * Arguments: 
+ *      (enum colors) - the color to finish
+ * Notes:     
+ *  - Follows the left edge of the line
+ *  - Begins with a left turn
+ */
 void follow_line(enum colors color) {
     while (!obsticle()) {
-        go_forward(250); 
-        
-        delay(250); 
-
-        // check that still on the line
-        if (detectColor() != color) {
-            int iteration = 1; 
-
-            turn_right(100);
-
-            delay(250); 
-
-            while (detectColor() != color) {
-                turn_left(100 * iteration * 2); 
-
-                delay(250); 
-
-                if (detectColor() == color) {
-                    return;
-                }
-
-                delay(250); 
-
-                turn_right(100 * iteration++ * 2); 
-            }
+        if (detectColor() == color) {
+            // pivot_left
+            analogWrite(motorA1, LOW); // a is right motor
+            analogWrite(motorA2, turn_speed);
+            delay(200); 
+            stop_all(); 
+        } else {
+            analogWrite(motorB1, turn_speed);
+            analogWrite(motorB2, LOW);
+            delay(200); 
+            stop_all(); 
         }
-    }    
+        delay(10); 
+    }
+    stop_all(); 
 }
 

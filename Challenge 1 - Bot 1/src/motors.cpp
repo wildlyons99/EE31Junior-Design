@@ -10,15 +10,6 @@
 // A is right 
 // B is left
 
-
-// Motor A connections
-const int motorA1 = 10; // pwn pin
-const int motorA2 = 9; // pwn pin 
-
-// Motor B connections
-const int motorB1 = 6;
-const int motorB2 = 5;
-
 // Set the speed (0 = off and 255 = max speed)
 // will likely need to make seperate motor speed for A and B to match so:
 const int forwardMotorSpeedA = 43; // 50% duty cycle
@@ -83,10 +74,10 @@ void go_backwards(int delay_time)
 
 void turn_right(int delay_time)
 {
-    analogWrite(motorA1, LOW);
-    analogWrite(motorA2, turnRightMotorSpeedA);
-    analogWrite(motorB1, LOW);
-    analogWrite(motorB2, turnRightMotorSpeedB);
+    analogWrite(motorA1, turnRightMotorSpeedA);
+    analogWrite(motorA2, LOW);
+    analogWrite(motorB1, turnRightMotorSpeedB);
+    analogWrite(motorB2, LOW);
 
     delay(delay_time);
     stop_all();
@@ -94,10 +85,10 @@ void turn_right(int delay_time)
 
 void turn_left(int delay_time)
 {
-    analogWrite(motorA1, turnRightMotorSpeedA);
-    analogWrite(motorA2, LOW);
-    analogWrite(motorB1, turnRightMotorSpeedB);
-    analogWrite(motorB2, LOW);
+    analogWrite(motorA1, LOW);
+    analogWrite(motorA2, turnRightMotorSpeedA);
+    analogWrite(motorB1, LOW);
+    analogWrite(motorB2, turnRightMotorSpeedB);
 
     delay(delay_time);
     stop_all();
