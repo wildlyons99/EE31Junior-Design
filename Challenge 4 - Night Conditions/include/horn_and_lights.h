@@ -12,5 +12,6 @@ void honk();
 void honk_times(int num_times);
 void flash_headlights();
 void rear_turn_signal();
+void morse_hi();
 
 #endif

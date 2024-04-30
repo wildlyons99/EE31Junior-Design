@@ -5,11 +5,13 @@
 #include <Arduino.h>
 #include "horn_and_lights.h"
 
-const int headlights = 1;
-const int brake = 2;
+const int headlights = 0;
+const int brake = 1;
 
-const int right_blinker = 3;
-const int left_blinker = 4;
+const int right_blinker = 2;
+const int left_blinker = 3;
+
+const int ir = 11;
 
 void setup_horn()
 {
@@ -22,11 +24,13 @@ void setup_lights()
     pinMode(brake, OUTPUT);
     pinMode(right_blinker, OUTPUT);
     pinMode(left_blinker, OUTPUT);
+    pinMode(ir, OUTPUT);
 
     digitalWrite(left_blinker, LOW);
     digitalWrite(right_blinker, LOW);
     digitalWrite(brake, LOW);
     digitalWrite(headlights, LOW);
+    digitalWrite(ir, LOW);
 }
 
 /* blink_left
@@ -64,13 +68,13 @@ Flash headlights twice (USED FOR CHALLENGE 4)
 void flash_headlights()
 {
     digitalWrite(headlights, HIGH);
-    delay(100);
+    delay(200);
     digitalWrite(headlights, LOW);
-    delay(100);
+    delay(200);
     digitalWrite(headlights, HIGH);
-    delay(100);
+    delay(200);
     digitalWrite(headlights, LOW);
-    delay(100);
+    delay(200);
 }
 
 /* rear_turn_signal
@@ -83,4 +87,44 @@ void rear_turn_signal()
     delay(500);
     digitalWrite(right_blinker, LOW);
     digitalWrite(left_blinker, LOW);
+    delay(500);
+    digitalWrite(right_blinker, HIGH);
+    digitalWrite(left_blinker, HIGH);
+    delay(500);
+    digitalWrite(right_blinker, LOW);
+    digitalWrite(left_blinker, LOW);
+}
+
+void morse_hi()
+{
+    digitalWrite(ir, HIGH);
+    delay(100);
+    digitalWrite(ir, LOW);
+    delay(100);
+
+    digitalWrite(ir, HIGH);
+    delay(100);
+    digitalWrite(ir, LOW);
+    delay(100);
+
+    digitalWrite(ir, HIGH);
+    delay(100);
+    digitalWrite(ir, LOW);
+    delay(100);
+
+    digitalWrite(ir, HIGH);
+    delay(100);
+    digitalWrite(ir, LOW);
+
+    delay(300);
+
+    digitalWrite(ir, HIGH);
+    delay(100);
+    digitalWrite(ir, LOW);
+    delay(100);
+
+    digitalWrite(ir, HIGH);
+    delay(100);
+    digitalWrite(ir, LOW);
+    delay(100);
 }
