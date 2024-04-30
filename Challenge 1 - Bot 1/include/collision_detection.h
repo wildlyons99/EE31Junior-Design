@@ -1,7 +1,7 @@
 #ifndef __COLLISION_DETECTION__
 #define __COLLISION_DETECTION__
 
-#define collision_power 11
+#include "pins.h"
 
 bool obsticle(); 
 

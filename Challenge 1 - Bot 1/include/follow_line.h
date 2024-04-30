@@ -2,6 +2,7 @@
 #define __FOLLOW_LINE__
 
 #include "color_detection.h"
+#include "pins.h"
 
 void follow_line(enum colors color); 
 

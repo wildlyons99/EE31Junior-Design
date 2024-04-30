@@ -2,8 +2,7 @@
 #define __HORN_LIGHTS__
 
 #include <Arduino.h>
-
-const int hornPin = 4; // Output pin for the square wave
+#include "pins.h"
 
 // initializes hornPin to Output
 void setup_horn(); 

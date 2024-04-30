@@ -2,14 +2,7 @@
 #define __MOTORS__
 
 #include <Arduino.h>
-
-// Motor A connections
-const int motorA1 = 10; // pwn pin
-const int motorA2 = 9; // pwn pin 
-
-// Motor B connections
-const int motorB1 = 6;
-const int motorB2 = 5;
+#include "pins.h"
 
 void setup_motors(); 
 

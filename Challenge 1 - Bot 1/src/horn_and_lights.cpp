@@ -5,12 +5,6 @@
 #include <Arduino.h>
 #include "horn_and_lights.h"
 
-const int headlights = 1; 
-const int brake = 2; 
-
-const int right_blinker = 3; 
-const int left_blinker = 4;  
-
 void setup_horn() {
     pinMode(hornPin, OUTPUT);
 }

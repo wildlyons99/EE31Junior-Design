@@ -2,8 +2,7 @@
 #define __AMBIENT_LIGHT__
 
 #include <stdbool.h>
-
-#define photoresistor_pin A2
+#include "pins.h"
 
 bool daytime(); 
 

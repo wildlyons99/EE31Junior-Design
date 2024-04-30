@@ -5,8 +5,6 @@
 
 #include <motors.h>
 
-// PWM pin options: 3, 5, 6, 9, 10 and 11
-
 // A is right 
 // B is left
 
