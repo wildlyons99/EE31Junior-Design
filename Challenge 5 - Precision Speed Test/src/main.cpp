@@ -12,11 +12,11 @@ void setup() {
 void loop() {
     unsigned int now = millis(); 
 
-    while (millis() - now <= 20000) {
+    // while (millis() - now <= 20000) {
         go_forward(150); 
 
-        delay(75); 
-    }
+        delay(125); 
+    // }
 
-    while(1); 
+    // while(1); 
 }

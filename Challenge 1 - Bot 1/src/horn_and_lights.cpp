@@ -25,6 +25,8 @@ void setup_lights() {
     digitalWrite(right_blinker, LOW); 
     digitalWrite(brake, LOW); 
     digitalWrite(headlights, LOW); 
+
+    // setup state LEDs
 }
 
 /* blink_left 

@@ -29,51 +29,54 @@ void loop() {
 
     delay(750); 
         
-    // drive pretty much straigh to the wall until detects collision
-    drive_forward(); 
+    // // drive pretty much straigh to the wall until detects collision
+    // drive_forward(); 
 
-    // keep driving until collision detected
-    while(!obsticle())
-        delay(100); 
+    // // keep driving until collision detected
+    // while(!obsticle())
+    //     delay(100); 
     
-    // then stop
-    stop_all(); 
+    // // then stop
+    // stop_all(); 
 
-    Serial.println("Obsticle"); 
+    // Serial.println("Obsticle"); 
 
-    delay(1000); 
+    // delay(1000); 
 
-    // turn around and go back until find the red line
-    turn_left(turn_right_180); 
+    // // turn around and go back until find the red line
+    // turn_left(turn_right_180); 
 
-    drive_forward(); 
+    // drive_forward(); 
     
-    while(detectColor() != Red); 
-    stop_all(); 
+    // while(detectColor() != Red); 
+    // stop_all(); 
 
-    follow_line(Red); 
+    // follow_line(Red); 
 
-    turn_left(turn_right_180 / 2); 
+    // turn_left(turn_right_180 / 2); 
 
-    // drive forward until get to yellow line
-    drive_forward(); 
-    while(detectColor() != Yellow); 
-    stop_all(); 
+    // // drive forward until get to yellow line
+    // drive_forward(); 
+    // while(detectColor() != Yellow); 
+    // stop_all(); 
 
-    follow_line(Yellow); 
+    // follow_line(Yellow); 
 
 
-    // turn_left()
-    Serial.println("done"); 
+    // // turn_left()
+    // Serial.println("done"); 
 
-    while(1); 
+    // // while(1); 
 
-    // follow red line -> turn left and go until detect collision on wall
-    // follow_
+    // turn_left(turn_right_180 / 2); 
 
-    // turn left and go to yellow line
+    // drive_forward(); 
+    // while(!obsticle())
+    //     delay(100); 
 
-    // turn left to follow yellow line all the way 
+    // stop_all(); 
 
-    // until about 6 inches away left go left and stop 
+    // turn_left(turn_right_180); 
+
+    // while(1); 
 }

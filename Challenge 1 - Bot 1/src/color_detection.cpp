@@ -24,57 +24,43 @@ void setup_color_detection() {
 }
 
 enum colors detectColor() {
-    static unsigned long previousMillis = 0;
-    unsigned long currentMillis = millis();
+    // static unsigned long previousMillis = 0;
+    // unsigned long currentMillis = millis();
 
-    if(currentMillis - previousMillis >= blueRedFreq) {
+    // if(currentMillis - previousMillis >= blueRedFreq) {
 
-        // Serial.print("Red: ");
-        // Serial.print(redValue);
-        // Serial.print("        BLue: ");
-        // Serial.println(blueValue);
+    char *color_string[] = {"None", "Black", "Blue", "Yellow", "Red"}; 
 
-        char *color_string[] = {"None", "Black", "Blue", "Yellow", "Red"}; 
+    // Serial.print("Color Detected: "); Serial.println(color_string[currColor]); 
 
-        Serial.print("Color Detected: "); Serial.println(color_string[currColor]); 
+    //blue is high, red is low
+    digitalWrite(redLED, LOW);
+    digitalWrite(blueLED, HIGH);
+
+    delay(50);
+
+    //read blue value
+    blueValue = analogRead(colorRead);
+    blueValue = blueValue / 1023 * 5;
 
 
-        //reset count
-        previousMillis = currentMillis; 
-        LEDstate = !LEDstate;
+    //blue is low, red is high
+    digitalWrite(blueLED, LOW);
+    digitalWrite(redLED, HIGH);
 
-        //flip LED
-        // if(LEDstate){
-            //blue is high, red is low
-            digitalWrite(redLED, LOW);
-            digitalWrite(blueLED, HIGH);
+    delay(50);
+    
+    //read red value
+    redValue = analogRead(colorRead);
+    redValue = redValue / 1023 * 5;
 
-            delay(50);
+    // turn both leds off
+    digitalWrite(blueLED, LOW);
+    digitalWrite(redLED, LOW);
+        
 
-            //read blue value
-            blueValue = analogRead(colorRead);
-            blueValue = blueValue / 1023 * 5;
-
-        // } else {
-            //blue is low, red is high
-            digitalWrite(blueLED, LOW);
-            digitalWrite(redLED, HIGH);
-
-            delay(50);
-            
-            //read red value
-            redValue = analogRead(colorRead);
-            redValue = redValue / 1023 * 5;
-
-            // turn both leds off
-            digitalWrite(blueLED, LOW);
-            digitalWrite(redLED, LOW);
-        // }
-    }
-
-    Serial.print("Analog Red: "); Serial.print(redValue); 
-    Serial.print("                   Analog Blue: "); Serial.println(blueValue); 
-
+    // Serial.print("Analog Red: "); Serial.print(redValue); 
+    // Serial.print("                   Analog Blue: "); Serial.println(blueValue); 
 
     if(redValue < 1.6 && blueValue < 1.5){
         currColor = Black;
