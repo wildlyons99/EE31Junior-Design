@@ -26,22 +26,18 @@ int status = WL_IDLE_STATUS;
 char server[] = "ee31.ece.tufts.edu";    // name address for (using DNS)
 
 // post parameters to be sent (just for testing here, will be replaced by the actual data)
-char postBody[] = "hello this is a test";
+char postBody[] = "hello this is a test from Team Team Red";
 
 #define TEAM_RED_UUID A20F65BA5E3C
 #define PURPLE_MOUNTAIN 89C87865077A
 
 // format of postRoute: "POST /senderID/receiverID HTTP/1.1"
-// char postRoute[] = "POST /TEAM_RED_UUID/PURPLE_MOUNTAIN HTTP/1.1"; // for when both online
-//char postRoute[] = "POST /89C87865077A/89C87865077A HTTP/1.1"; // sending from ourselves to ourselves
-//char postRoute[] = "POST /8050D1451904/8050D1451904 HTTP/1.1"; // sending from ourselves to ourselves
-char postRoute[] = "POST /A20F65BA5E3C/A20F65BA5E3C HTTP/1.1"; // sending from ourselves to ourselves
+char postRoute[] = "POST /A20F65BA5E3C/89C87865077A HTTP/1.1"; // sending from ourselves to ourselves
 
 
 // format of gettRoute: "GET /senderID/receiverID HTTP/1.1"
-// char getRoute[] = "GET /89C87865077A/8050D1451904 HTTP/1.1";
-//char getRoute[] = "GET /8050D1451904/8050D1451904 HTTP/1.1"; 
-char getRoute[] = "GET /A20F65BA5E3C/A20F65BA5E3C HTTP/1.1"; 
+// char getRoute[] = "GET /89C87865077A/A20F65BA5E3C HTTP/1.1"; 
+char getRoute[] = "GET /A20F65BA5E3C/89C87865077A HTTP/1.1";
 
 // defining client
 WiFiClient client;
@@ -90,7 +86,7 @@ void POSTServer(const char theRoute[], char *bodyMessage) {
 // get message 
 void GETServer(const char theRoute[], char *message) {
   if (client.connect(server, portNumber)) {
-    Serial.println("In get server"); 
+    // Serial.println("In get server"); 
     // Make a HTTP GET request:
     client.println(theRoute);
     client.print("Host: ");
@@ -110,7 +106,7 @@ void GETServer(const char theRoute[], char *message) {
         char c = client.read();
         message[messageIndex++] = c;
         // Check if the buffer is full
-        int buffer_size = 21; 
+        int buffer_size = 512; 
         if (messageIndex >= buffer_size) {
           break; // Stop reading to avoid overflow
         }
@@ -128,7 +124,7 @@ void GETServer(const char theRoute[], char *message) {
 }
 
 // this is the variable we are going to pass the info to, length tbd
-char messageData[15];
+char messageData[2056];
 
 void setup() {
   //Initialize serial and wait for port to open:
@@ -165,6 +161,27 @@ void setup() {
 
   // Try one GET
   GETServer(getRoute, messageData);
+
+  Serial.print("recieved message: "); Serial.println(messageData); 
+
+  char *ptr = strstr(messageData, "message=");
+    
+    if (ptr != NULL) {
+        ptr += strlen("message="); // Move pointer to the start of the message
+        
+        // Read the message using strncpy to avoid buffer overflow
+        char message[65]; // Maximum length of message is 64 characters
+        int length = strcspn(ptr, "\0"); // Find the length of the message until the next space or end of string
+        if (length > 64) // Cap the length at 64 characters
+            length = 64;
+        
+        strncpy(message, ptr, length);
+        message[length] = '\0'; // Null-terminate the string
+        
+        Serial.print("Message: "); Serial.println(message);
+    } else {
+        Serial.print("No message found.\n");
+    }
 }
 
 void loop() {
