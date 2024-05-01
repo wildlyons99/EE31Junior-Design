@@ -12,18 +12,17 @@
 // color Detection
 #define colorRead A5
 
-
 /////////////////////////////////////////////////
 //             Digital pins                    //
 /////////////////////////////////////////////////
 
 // PWM pin options: 3, 5, 6, 9, 10 and 11
 
-const int headlights = 1; 
-const int brake = 2; 
+const int headlights = 1;
+const int brake = 2;
 
-const int right_blinker = 3; 
-const int left_blinker = 4;  
+const int right_blinker = 3;
+const int left_blinker = 4;
 
 // Light and horns //TODO UH OH OVERLAP
 const int hornPin = 4; // Output pin for the square wave
@@ -38,7 +37,12 @@ const int blueLED = 8;
 
 // Motor A connections
 const int motorA1 = 10; // pwn pin
-const int motorA2 = 9; // pwn pin 
+const int motorA2 = 9;  // pwn pin
 
+// Status LEDs
+const int redStatus = 13;
+const int blueStatus = 12;
+const int greenStatus = SCL;
+const int yellowStatus = SDA;
 
 #endif

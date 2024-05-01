@@ -8,75 +8,99 @@
 #include "color_detection.h"
 #include "follow_line.h"
 
-const int turn_right_180 = 1050; 
+const int turn_right_180 = 1050;
 
-void setup() {
-    setup_motors(); 
+void setup()
+{
+    setup_motors();
     setup_color_detection();
-    setup_horn(); 
-    setup_lights(); 
+    setup_horn();
+    setup_lights();
 
-    // // for collision detection power wire 
+    // // for collision detection power wire
     // pinMode(collision_power, OUTPUT);
-    // digitalWrite(collision_power, HIGH); 
-    Serial.begin(9600); 
+    // digitalWrite(collision_power, HIGH);
+    Serial.begin(9600);
 
-    delay(2000); 
+    delay(2000);
 }
 
-void loop() {
-    detectColor(); 
+void loop()
+{
+    detectColor();
 
-    delay(750); 
-        
-    // // drive pretty much straigh to the wall until detects collision
-    // drive_forward(); 
+    delay(750);
 
-    // // keep driving until collision detected
-    // while(!obsticle())
-    //     delay(100); 
-    
-    // // then stop
-    // stop_all(); 
+    // drive pretty much straigh to the wall until detects collision
+    drive_forward();
 
-    // Serial.println("Obsticle"); 
+    // keep driving until collision detected
+    while (!obsticle())
+        delay(100);
 
-    // delay(1000); 
+    // then stop
+    stop_all();
 
-    // // turn around and go back until find the red line
-    // turn_left(turn_right_180); 
+    Serial.println("Obsticle");
 
-    // drive_forward(); 
-    
-    // while(detectColor() != Red); 
-    // stop_all(); 
+    delay(1000);
 
-    // follow_line(Red); 
+    // turn around and go back until find the red line
+    turn_left(turn_right_180);
 
-    // turn_left(turn_right_180 / 2); 
+    drive_forward();
 
-    // // drive forward until get to yellow line
-    // drive_forward(); 
-    // while(detectColor() != Yellow); 
-    // stop_all(); 
+    while (detectColor() != Red)
+        ;
+    stop_all();
 
-    // follow_line(Yellow); 
+    // Once bot comes back and finds the red line, blink red light
+    digitalWrite(redStatus, HIGH);
 
+    follow_line(Red);
 
-    // // turn_left()
-    // Serial.println("done"); 
+    // After stopping at wall, THEN
+    BlinkRedStatus();
+    BlinkRedStatus();
+    BlinkRedStatus();
+    digitalWrite(greenStatus, HIGH);
 
-    // // while(1); 
+    // Communicate with BOT 2, THEN
+    // Once our bot receives message back, THEN
+    headAndRear();
+    honk_times(2);
 
-    // turn_left(turn_right_180 / 2); 
+    turn_left(turn_right_180 / 2);
 
-    // drive_forward(); 
-    // while(!obsticle())
-    //     delay(100); 
+    // drive forward until get to yellow line
+    drive_forward();
+    while (detectColor() != Yellow)
+        ;
+    stop_all();
 
-    // stop_all(); 
+    // After finding yellow, THEN
+    honk_times(2);
+    digitalWrite(greenStatus, LOW);
+    delay(100);
+    digitalWrite(yellowStatus, HIGH);
 
-    // turn_left(turn_right_180); 
+    follow_line(Yellow);
 
-    // while(1); 
+    // turn_left()
+    Serial.println("done");
+
+    // while(1);
+
+    turn_left(turn_right_180 / 2);
+
+    drive_forward();
+    while (!obsticle())
+        delay(100);
+
+    stop_all();
+
+    turn_left(turn_right_180);
+
+    while (1)
+        ;
 }
