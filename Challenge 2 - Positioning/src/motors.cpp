@@ -21,16 +21,16 @@ const int motorB2 = 5;
 
 // Set the speed (0 = off and 255 = max speed)
 // will likely need to make seperate motor speed for A and B to match so:
-const int forwardMotorSpeedA = 41; // 50% duty cycle
-const int forwardMotorSpeedB = 40; // 50% duty cycle
+const int forwardMotorSpeedA = 50; // 50% duty cycle
+const int forwardMotorSpeedB = 48; // 50% duty cycle
 
 const int turnRightMotorSpeedA = 65; // 50% duty cycle
 const int turnRightMotorSpeedB = 70; // 50% duty cycle
 
 // A is right
 // B is left
-const int backwardMotorSpeedA = 65;
-const int backwardMotorSpeedB = 70;
+const int backwardMotorSpeedA = 51;
+const int backwardMotorSpeedB = 48;
 
 void setup_motors()
 {
