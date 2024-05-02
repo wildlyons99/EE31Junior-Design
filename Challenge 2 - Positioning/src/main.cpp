@@ -60,6 +60,7 @@ char messageData[515];
 int bot_num = 2; 
 
 void loop() {
+    /* 
     wifi_connect(); 
 
     // format of postRoute: "POST /senderID/receiverID HTTP/1.1"
@@ -106,6 +107,7 @@ void loop() {
 
         delay(500); 
     }
+    */
     
     unsigned int now = millis(); 
 
@@ -148,6 +150,8 @@ void loop() {
         delay(100); 
     }
 
+    /*
+
     if (bot_num == 1) {
         Serial.println("Sending go!"); 
         POSTServer(postRoute, "go=true");
@@ -162,6 +166,8 @@ void loop() {
 
     POSTServer(postRoute, "go=false"); 
     Serial.println("Done with execution"); 
+
+    */
 
     while(1); 
 }

@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include <color_detection.h>
 
+const int blueRedFreq = 50;
 
 float blueValue = 0.0;
 float redValue = 0.0;
@@ -25,7 +26,7 @@ enum colors detectColor() {
 
     char *color_string[] = {"None", "Black", "Blue", "Yellow", "Red"}; 
 
-    // Serial.print("Color Detected: "); Serial.println(color_string[currColor]); 
+    Serial.print("Color Detected: "); Serial.println(color_string[currColor]); 
 
     //blue is high, red is low
     digitalWrite(redLED, LOW);
@@ -53,8 +54,8 @@ enum colors detectColor() {
     digitalWrite(redLED, LOW);
         
 
-    // Serial.print("Analog Red: "); Serial.print(redValue); 
-    // Serial.print("                   Analog Blue: "); Serial.println(blueValue); 
+    Serial.print("Analog Red: "); Serial.print(redValue); 
+    Serial.print("                   Analog Blue: "); Serial.println(blueValue); 
 
     if(redValue < 1.6 && blueValue < 1.5){
         currColor = Black;
