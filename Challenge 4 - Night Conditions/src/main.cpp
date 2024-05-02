@@ -16,6 +16,8 @@ void setup()
     pinobject.setPins();
     Serial.begin(9600);
 
+    digitalWrite(0, HIGH); 
+
     delay(3000);
 }
 
@@ -27,7 +29,8 @@ void loop()
     // delay(300);
     go_forward(50);
     if (obsticle())
-    {
+    {   
+        digitalWrite(0, LOW); 
         stop_all();
         delay(300);
         morse_hi();

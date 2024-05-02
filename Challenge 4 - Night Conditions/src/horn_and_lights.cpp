@@ -11,6 +11,12 @@ const int brake = 1;
 const int right_blinker = 2;
 const int left_blinker = 3;
 
+// Status LEDs
+const int redStatus = 13;
+const int blueStatus = 12;
+const int greenStatus = SCL;
+const int yellowStatus = SDA;
+
 const int ir = 11;
 
 void setup_horn()
@@ -25,12 +31,17 @@ void setup_lights()
     pinMode(right_blinker, OUTPUT);
     pinMode(left_blinker, OUTPUT);
     pinMode(ir, OUTPUT);
+    pinMode(blueStatus, OUTPUT);
+    pinMode(yellowStatus, OUTPUT);
+    pinMode(greenStatus, OUTPUT);
 
     digitalWrite(left_blinker, LOW);
     digitalWrite(right_blinker, LOW);
     digitalWrite(brake, LOW);
     digitalWrite(headlights, LOW);
     digitalWrite(ir, LOW);
+    digitalWrite(greenStatus, LOW);
+    digitalWrite(yellowStatus, LOW);
 }
 
 /* blink_left
@@ -82,6 +93,12 @@ Illuminate rear yellow turn signals. (USED FOR CHALLENGE 4)
 */
 void rear_turn_signal()
 {
+    digitalWrite(right_blinker, HIGH);
+    digitalWrite(left_blinker, HIGH);
+    delay(500);
+    digitalWrite(right_blinker, LOW);
+    digitalWrite(left_blinker, LOW);
+    delay(500);
     digitalWrite(right_blinker, HIGH);
     digitalWrite(left_blinker, HIGH);
     delay(500);
