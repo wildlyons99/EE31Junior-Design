@@ -1,0 +1,73 @@
+{
+  "C_Cpp_Runner.cCompilerPath": "C:/Users/Remy R/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+  "C_Cpp_Runner.cppCompilerPath": "C:/Users/Remy R/.platformio/packages/toolchain-atmelavr/bin/avr-g++.exe",
+  "C_Cpp_Runner.debuggerPath": "C:/Users/Remy R/.platformio/packages/toolchain-atmelavr/bin/avr-gdb.exe",
+  "C_Cpp_Runner.cStandard": "gnu11",
+  "C_Cpp_Runner.cppStandard": "gnu++11",
+  "C_Cpp_Runner.msvcBatchPath": "",
+  "C_Cpp_Runner.useMsvc": false,
+  "C_Cpp_Runner.warnings": [
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Wshadow",
+    "-Wformat=2",
+    "-Wcast-align",
+    "-Wconversion",
+    "-Wsign-conversion",
+    "-Wnull-dereference"
+  ],
+  "C_Cpp_Runner.msvcWarnings": [
+    "/W4",
+    "/permissive-",
+    "/w14242",
+    "/w14287",
+    "/w14296",
+    "/w14311",
+    "/w14826",
+    "/w44062",
+    "/w44242",
+    "/w14905",
+    "/w14906",
+    "/w14263",
+    "/w44265",
+    "/w14928"
+  ],
+  "C_Cpp_Runner.enableWarnings": true,
+  "C_Cpp_Runner.warningsAsError": false,
+  "C_Cpp_Runner.compilerArgs": [],
+  "C_Cpp_Runner.linkerArgs": [],
+  "C_Cpp_Runner.includePaths": [
+    "c:/Users/Remy R/Documents/College Stuff/ee31/EE31Junior-Design/Challenge 7 - Go Beyond/ArduinoPIO/include",
+    "c:/Users/Remy R/Documents/College Stuff/ee31/EE31Junior-Design/Challenge 7 - Go Beyond/ArduinoPIO/src",
+    "c:/Users/Remy R/Documents/College Stuff/ee31/EE31Junior-Design/Challenge 7 - Go Beyond/ArduinoPIO/.pio/libdeps/uno_wifi_rev2/MQTT/src",
+    "c:/Users/Remy R/Documents/College Stuff/ee31/EE31Junior-Design/Challenge 7 - Go Beyond/ArduinoPIO/.pio/libdeps/uno_wifi_rev2/WiFiNINA/src",
+    "C:/Users/Remy R/.platformio/packages/framework-arduino-megaavr/libraries/SPI/src",
+    "c:/Users/Remy R/Documents/College Stuff/ee31/EE31Junior-Design/Challenge 7 - Go Beyond/ArduinoPIO/.pio/libdeps/uno_wifi_rev2/ArduinoHttpClient/src",
+    "C:/Users/Remy R/.platformio/packages/framework-arduino-megaavr/cores/arduino/api/deprecated",
+    "C:/Users/Remy R/.platformio/packages/framework-arduino-megaavr/cores/arduino",
+    "C:/Users/Remy R/.platformio/packages/framework-arduino-megaavr/variants/uno2018",
+    "C:/Users/Remy R/.platformio/packages/framework-arduino-megaavr/libraries/EEPROM/src",
+    "C:/Users/Remy R/.platformio/packages/framework-arduino-megaavr/libraries/SoftwareSerial/src",
+    "C:/Users/Remy R/.platformio/packages/framework-arduino-megaavr/libraries/Wire/src",
+    ""
+  ],
+  "C_Cpp_Runner.includeSearch": [
+    "*",
+    "**/*"
+  ],
+  "C_Cpp_Runner.excludeSearch": [
+    "**/build",
+    "**/build/**",
+    "**/.*",
+    "**/.*/**",
+    "**/.vscode",
+    "**/.vscode/**"
+  ],
+  "C_Cpp_Runner.useAddressSanitizer": false,
+  "C_Cpp_Runner.useUndefinedSanitizer": false,
+  "C_Cpp_Runner.useLeakSanitizer": false,
+  "C_Cpp_Runner.showCompilationTime": false,
+  "C_Cpp_Runner.useLinkTimeOptimization": false,
+  "C_Cpp_Runner.msvcSecureNoWarnings": false
+}
