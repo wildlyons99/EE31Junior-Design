@@ -26,7 +26,7 @@ enum colors detectColor() {
 
     char *color_string[] = {"None", "Black", "Blue", "Yellow", "Red"}; 
 
-    // Serial.print("Color Detected: "); Serial.println(color_string[currColor]); 
+    Serial.print("Color Detected: "); Serial.println(color_string[currColor]); 
 
     //blue is high, red is low
     digitalWrite(redLED, LOW);
@@ -54,9 +54,28 @@ enum colors detectColor() {
     digitalWrite(redLED, LOW);
         
 
-    // Serial.print("Analog Red: "); Serial.print(redValue); 
-    // Serial.print("                   Analog Blue: "); Serial.println(blueValue); 
+    Serial.print("Analog Red: "); Serial.print(redValue); 
+    Serial.print("                   Analog Blue: "); Serial.println(blueValue); 
 
+    if(redValue < 1.6 && blueValue < 1.5){
+        currColor = Black;
+        // Serial.println("BLACK");
+    } else if(redValue >= 1.6 && redValue < 3 && blueValue >= 1.6 && blueValue <= 3){
+        currColor = Blue;
+        // Serial.println("BLUE");
+    } else if(redValue >= 3 && redValue < 4.5 && blueValue >= 2.5 && blueValue <= 4.5){
+        currColor = Yellow;
+        // Serial.println("YELLOW");
+    } else if(redValue >= 3 && redValue <= 4 && blueValue >= 0.5 && blueValue <= 1.6){
+        currColor = Red;
+        // Serial.println("RED");
+    } else {
+        currColor = None;
+        // Serial.println("NONE");
+    }
+
+    // values before new battery
+    /*
     if(redValue < 1.6 && blueValue < 1.5){
         currColor = Black;
         // Serial.println("BLACK");
@@ -73,6 +92,7 @@ enum colors detectColor() {
         currColor = None;
         // Serial.println("NONE");
     }
+     */
 
     return currColor;
 }

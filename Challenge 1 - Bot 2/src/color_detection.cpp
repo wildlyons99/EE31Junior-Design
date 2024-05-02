@@ -60,6 +60,25 @@ enum colors detectColor() {
     if(redValue < 1.6 && blueValue < 1.5){
         currColor = Black;
         // Serial.println("BLACK");
+    } else if(redValue >= 1.6 && redValue < 3 && blueValue >= 1.6 && blueValue <= 3){
+        currColor = Blue;
+        // Serial.println("BLUE");
+    } else if(redValue >= 3 && redValue < 4.5 && blueValue >= 2.5 && blueValue <= 4.5){
+        currColor = Yellow;
+        // Serial.println("YELLOW");
+    } else if(redValue >= 3 && redValue <= 4 && blueValue >= 0.5 && blueValue <= 1.6){
+        currColor = Red;
+        // Serial.println("RED");
+    } else {
+        currColor = None;
+        // Serial.println("NONE");
+    }
+
+    // values before new battery
+    /*
+    if(redValue < 1.6 && blueValue < 1.5){
+        currColor = Black;
+        // Serial.println("BLACK");
     } else if(redValue >= 1.6 && redValue <= 3 && blueValue >= 2.2 && blueValue <= 3){
         currColor = Blue;
         // Serial.println("BLUE");
@@ -73,6 +92,7 @@ enum colors detectColor() {
         currColor = None;
         // Serial.println("NONE");
     }
+     */
 
     return currColor;
 }
