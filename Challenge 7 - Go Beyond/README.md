@@ -1,8 +1,13 @@
-#EE31: Junior Design - Final Project, Go Beyond
+# EE31: Junior Design - Final Project, Go Beyond
 This is the Go Beyond for Team Team Red for EE31.
 The GUI only primarily works with Challenge 1 and if the MQTT code is uncommented.
 
 The following section is an attempt at explaining how to run the GUI.
+
+## Folder Structure
+- ArduinoPIO: Folder for PlatformIO project that has basic test code for sending MQTT messages on the Arduino Uno Wi-Fi Rev2 board. main.cpp contains the basic example.
+- mosquitto-mqtt-broker: Included download of mosquitto for portablility. Acts as MQTT broker (can subscribe and publish as well).
+- TeamTeamRedViewer-GUI: Folder containing GUI, as a PyCharm project. GUI file of importance is TeamTeamRedViewer.py
 
 # Setup
 1. First get the MQTT broker working. This is done through mosquitto (Windows program included).
