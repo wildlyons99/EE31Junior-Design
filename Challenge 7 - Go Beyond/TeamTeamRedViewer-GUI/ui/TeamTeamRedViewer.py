@@ -3,6 +3,9 @@ from PyQt5 import QtWidgets, QtGui
 from PyQt5 import uic
 
 import hunter
+import frontview
+import backview
+import sideview
 
 # import serial
 from time import sleep
@@ -15,8 +18,8 @@ class UiMainWindow(QtWidgets.QMainWindow):
         Initializes a QMainWindow from the .ui file and sets up the GUI.
         """
         QtWidgets.QMainWindow.__init__(self)
-        self.ui = uic.loadUi('roboarmui_v0.1.ui', self)
-        self.setWindowTitle("roboarmui_v0.1")
+        self.ui = uic.loadUi('TeamTeamRedViewer_v0.1.ui', self)
+        self.setWindowTitle("TeamTeamRedViewer")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("WindowIcon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)
@@ -47,12 +50,12 @@ class MQTTHelper:
         self.stop_btn = stop_btn
 
         for textBrowser in self.textBrowserList:
-            textBrowser.insertPlainText("n/a")
+            textBrowser.insertPlainText("Awaiting user input! :D")
 
         self.thread = None
         self.worker = None
 
-    def report_pico_data(self, data):
+    def report_mqtt_data(self, data):
         """
         TODO: write contract -- this feels so cursed beyond belief help
 
@@ -116,19 +119,20 @@ class MQTTHelper:
         if self.worker is None:
             self.start_btn.setEnabled(False)
             self.stop_btn.setEnabled(True)
+            self.textBrowserList[len(self.textBrowserList) - 1].append(f"<html><b>Connecting and subscribing to MQTT thread!</b</html>")
             print("starting thread!")
             self.thread = QThread()
             self.worker = Worker()
 
             self.worker.moveToThread(self.thread)
 
-            self.thread.started.connect(self.worker.receive_sensor_data)
+            self.thread.started.connect(self.worker.mqtt_receive_messages)
 
             self.worker.finished.connect(self.thread.quit)
             self.worker.finished.connect(self.worker.deleteLater)
             self.thread.finished.connect(self.thread.deleteLater)
 
-            self.worker.picodata.connect(self.report_pico_data)
+            self.worker.mqttsignal.connect(self.report_mqtt_data)
 
             self.thread.start()
 
@@ -143,6 +147,7 @@ class MQTTHelper:
         :return:
         """
         print("calling stop_worker")
+        self.textBrowserList[len(self.textBrowserList) - 1].append("<html><b>Disconnecting and unsubscribing from  MQTT thread!</b</html>")
         if self.worker is not None:
             self.start_btn.setEnabled(True)
             self.stop_btn.setEnabled(False)
@@ -156,7 +161,8 @@ class Worker(QObject):
     """
     alive = True
     finished = pyqtSignal()
-    picodata = pyqtSignal(str)
+    mqttsignal = pyqtSignal(str)
+    mqttpayload = "bingus"
 
     # MQTT code is borrowed from: https://github.com/eclipse/paho.mqtt.python/blob/master/examples/client_sub.py
     # The example file is "mqtttest.py"
@@ -170,14 +176,26 @@ class Worker(QObject):
     def setup_mqtt(self):
         print("setup_mqtt")
         try:
-            # self.pico = serial.Serial("COM6", 115200)
-            self.pico.write(b"join\n")
+            # If you want to use a specific client id, use
+            # mqttc = mqtt.Client("client-id")
+            # but note that the client id must be unique on the broker. Leaving the client
+            # id parameter empty will generate a random id for you.
+            self.mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+            self.mqttc.on_message = self.on_message
+            self.mqttc.on_connect = self.on_connect
+            self.mqttc.on_subscribe = self.on_subscribe
+            # Uncomment to enable debug messages
+            # mqttc.on_log = self.on_log
+            self.mqttc.connect("192.168.1.154", 1883, 60)
+            self.mqttc.subscribe("test")
+            self.mqttc.loop_start()
         except Exception as e:
             print(e)
 
     def disconnect(self):
         try:
-            self.pico.write(b"quit\n")
+            self.mqttc.unsubscribe("test")
+            self.mqttc.loop_stop()
         except Exception as e:
             print(e)
 
@@ -185,6 +203,8 @@ class Worker(QObject):
         print("reason_code: " + str(reason_code))
 
     def on_message(self, mqttc, obj, msg):
+        self.mqttpayload = msg.payload.decode()
+        self.mqttsignal.emit(self.mqttpayload)
         print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
 
     def on_subscribe(self, mqttc, obj, mid, reason_code_list, properties):
@@ -193,13 +213,12 @@ class Worker(QObject):
     def on_log(self, mqttc, obj, level, string):
         print(string)
 
-    def receive_sensor_data(self):
+    def mqtt_receive_messages(self):
         while self.alive is True:
             try:
-                incoming_data = self.pico.readline()
-                incoming_data = str(incoming_data)[2:-5]
-                print(f"from pico:{incoming_data}")
-                self.picodata.emit(incoming_data)
+                # print(f"garbo, and received:{self.mqttpayload}")
+                # self.mqttc.loop_forever()
+                # self.mqttsignal.emit(self.mqttpayload)
                 sleep(0.1)
             except RuntimeError as e:
                 print(str(e))
@@ -213,8 +232,9 @@ class Worker(QObject):
         TODO: write contract
         :return:
         """
-        print("exiting worker and disconnecting attached pico's BLE!")
-        self.disconnect() # Sends signal to Pico to disconnect BLE
+        print("exiting worker and unsubscribing from thread!")
+
+        self.disconnect() # Sends signal to unsubscribe from mqtt thread
         self.alive = False
         self.finished.emit()
 

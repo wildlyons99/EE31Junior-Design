@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="frontView">
+    <file>Phase05-bot-front-view.png</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="sideView">
+    <file>Phase05-bot-side-view.png</file>
+  </qresource>
+</RCC>

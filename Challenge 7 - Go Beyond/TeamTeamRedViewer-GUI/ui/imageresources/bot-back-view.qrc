@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="backView">
+    <file>Phase05-bot-back-view.png</file>
+  </qresource>
+</RCC>
