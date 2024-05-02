@@ -25,7 +25,9 @@ void setup()
 
     Serial.println("Connected!"); 
 
-    int motorPercent = getPercent(6.0, 9.0, batteryOut);
+    int motorPercent = getPercent(6.0, 9.0, batteryOut);       
+    send_mqtt_string(String("$$$levelbatt:" + String(motorPercent))); 
+
     Serial.print("Motor: ");
     Serial.print(motorPercent);
     Serial.print("%\n");
@@ -41,6 +43,7 @@ void setup()
     }
 
     delay(1000);
+    Serial.print("Beginning..."); 
 }
 
 void loop()
@@ -48,6 +51,8 @@ void loop()
     // a config feature for if we need to reconfigure sensor values
     detectColor();
     delay(750);
+
+    send_mqtt("$$$F1");
 
     // begin challenge 1
     // drive pretty much straigh to the wall until detects collision
@@ -60,18 +65,26 @@ void loop()
     // then stop
     stop_all();
 
+    send_mqtt("$$$F0");
+
     Serial.println("Obsticle");
+    send_mqtt("$$$none");
 
     delay(1000);
 
     // turn around and go back until find the red line
     turn_left(turn_right_180);
 
+    send_mqtt("$$$obs0");
+
+    send_mqtt("$$$F1");
     drive_forward();
 
     while (detectColor() != Red)
         ;
     stop_all();
+
+    send_mqtt("$$$F0");
 
     // Once bot comes back and finds the red line, blink red light
     digitalWrite(redStatus, HIGH);
@@ -90,6 +103,8 @@ void loop()
         delay(200); 
     }
 
+
+    send_mqtt("$$$red");
     follow_line(Red);
 
     // After stopping at wall, THEN
@@ -130,6 +145,8 @@ void loop()
     delay(100);
     digitalWrite(yellowStatus, HIGH);
 
+    send_mqtt("$$$yellow");
+
     follow_line(Yellow);
 
     // Tell bot 2 to continue
@@ -140,14 +157,21 @@ void loop()
     // turn_left()
     turn_left(turn_right_180 / 2);
 
+    send_mqtt("$$$none");
+
     // drive back to wall
+    send_mqtt("$$$F1");
     drive_forward();
     while (!obsticle())
         delay(100);
 
     stop_all();
 
+    send_mqtt("$$$F0");
+
     turn_left(turn_right_180);
+
+    send_mqtt("$$$obs0");
 
     // wait for bot 2 to finish
     while (1);

@@ -5,6 +5,8 @@
 #include <Arduino.h>
 #include <collision_detection.h>
 
+#include "wifi_comm.h"
+
 // Collision dectection indo 
 const float ADC_RESOLUTION = 5.0 / 1023.0; 
 
@@ -34,6 +36,7 @@ bool obsticle() {
 
     if (voltage >= THREE_INCH_VOLTAGE) {
         // Serial.println("Collision Detected"); 
+        send_mqtt("$$$obs1"); 
         return true; 
     } else {
         return false; 

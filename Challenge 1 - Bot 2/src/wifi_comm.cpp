@@ -176,8 +176,6 @@ void wifi_connect() {
 
     mqtt.publish("test", "Connected Sucessfully!");
     Serial.println("Mqtt..."); 
-
-    while(1); 
 }
 
 void send_mqtt(const char msg[]) {

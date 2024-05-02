@@ -6,6 +6,7 @@
 #include <WiFiNINA.h>
 
 void send_mqtt(const char msg[]); 
+void send_mqtt_string(String msg); 
 
 void printWifiStatus(); 
 

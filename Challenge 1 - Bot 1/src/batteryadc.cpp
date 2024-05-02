@@ -56,7 +56,7 @@ double calculateVoltage(int adcValue, double refVoltage)
     double r1 = 2.0e6;                    // R1 = 2M ohms
     double r2 = 2.4e6;                    // R2 = 2.4M ohms
 
-    double voltage = (adcValue * referenceVoltage) / 1024.0;
+    double voltage = (adcValue * referenceVoltage) / 1023.0;
     double resistanceRatio = r2 / (r1 + r2);
     double calculatedVoltage = voltage * resistanceRatio;
     Serial.print("Voltage: ");
