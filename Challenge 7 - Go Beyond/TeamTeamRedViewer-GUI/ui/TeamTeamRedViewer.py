@@ -1,12 +1,10 @@
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from PyQt5.QtCore import *
 from PyQt5 import QtWidgets, QtGui
 from PyQt5 import uic
 
 import hunter
-import frontview
-import backview
-import sideview
-import testimage
+import frontview, backview, sideview, tuftslogo
+
 
 # import serial
 from time import sleep
@@ -28,11 +26,12 @@ class UiMainWindow(QtWidgets.QMainWindow):
         self.textBrowserList = [self.textBrowserFWD_0, self.textBrowserREV_0,
                                 self.textBrowserTURNLEFT, self.textBrowserTURNRIGHT,
                                 self.textBrowserFRONTLIGHTS, self.textBrowserBRAKELIGHTS,
-                                self.textBrowserArm_0, self.textBrowserArm_2,
-                                self.textBrowserServo,
+                                self.textBrowserCollisionDet, self.textBrowserLineFollow,
+                                self.textBrowserAmbient,
                                 self.textBrowserLogging]
 
-        self.helper = MQTTHelper(self.textBrowserList, self.startSerialBtn, self.stopSerialBtn)
+        self.helper = MQTTHelper(self.textBrowserList, self.startSerialBtn, self.stopSerialBtn,
+                                 self.progressBarBattery)
 
         # self.startSerialBtn.setEnabled(True)
         # self.stopSerialBtn.setEnabled(False)
@@ -44,12 +43,61 @@ class MQTTHelper:
     """
     TODO: write contract
     """
-    def __init__(self, text_browser_list, start_btn, stop_btn):
+    def __init__(self, text_browser_list, start_btn, stop_btn, battery_prog):
 
         self.textBrowserList = text_browser_list
 
         self.start_btn = start_btn
         self.stop_btn = stop_btn
+        self.battery_prog = battery_prog
+
+        self.lowbatterystyle =      '''QProgressBar {
+                                            background: rgb(27, 29, 35);
+                                            border: 2px solid rgb(27, 29, 35);
+                                            border-radius: 5px;
+                                            text-align: center;
+                                            font: 75 9pt "MS Shell Dlg 2";
+                                            font-weight: bold
+                                        }
+                                        QProgressBar::chunk:vertical {
+                                            background-color: rgb(255, 60, 40);
+                                            margin: 2px;
+                                            height: 20px;
+                                            border-radius: 2px;
+                                        }
+                                    '''
+        self.mediumbatterystyle =   '''QProgressBar {
+                                            background: rgb(27, 29, 35);
+                                            border: 2px solid rgb(27, 29, 35);
+                                            border-radius: 5px;
+                                            text-align: center;
+                                            font: 75 9pt "MS Shell Dlg 2";
+                                            font-weight: bold
+                                        }
+                                        QProgressBar::chunk:vertical {
+                                            background-color: rgb(255, 120, 20);
+                                            margin: 2px;
+                                            height: 20px;
+                                            border-radius: 2px;
+                                        } 
+                                    '''
+        self.highbatterystyle =     '''QProgressBar {
+                                            background: rgb(27, 29, 35);
+                                            border: 2px solid rgb(27, 29, 35);
+                                            border-radius: 5px;
+                                            text-align: center;
+                                            font: 75 9pt "MS Shell Dlg 2";
+                                            font-weight: bold
+                                        }
+                                        QProgressBar::chunk:vertical {
+                                            background-color: rgb(6, 176, 37);
+                                            margin: 2px;
+                                            height: 20px;
+                                            border-radius: 2px;
+                                        }
+                                    '''
+        self.truestyle = 'background-color: rgb(40, 143, 61); text-align:center;'
+        self.falsestyle = 'background-color: rgb(212, 57, 57); text-align:center;'
 
         for textBrowser in self.textBrowserList:
             textBrowser.insertPlainText("n/a")
@@ -76,6 +124,23 @@ class MQTTHelper:
         :param n:
         :return: none
         """
+        print(data)
+        if data.find("$$$") > -1:
+            parsedata = data[3:]
+            parsedata = parsedata.split(",")
+            # print(f"test:{parsedata}")
+            for item in parsedata:
+                # print(f"elem:{item}")
+                if item.find("levelbatt:") > -1:
+                    percentage = int(item[len("levelbatt")+1:])
+                    self.battery_prog.setValue(percentage)
+                    if percentage > 50:
+                        self.battery_prog.setStyleSheet(self.highbatterystyle)
+                    elif percentage < 50 and percentage > 20:
+                        self.battery_prog.setStyleSheet(self.mediumbatterystyle)
+                    else:
+                        self.battery_prog.setStyleSheet(self.lowbatterystyle)
+
         index = 0
         for textBrowser in self.textBrowserList:
             # found = textBrowser.find("$$$")
@@ -83,35 +148,88 @@ class MQTTHelper:
             if data.find("$$$") > -1 and index != len(self.textBrowserList) - 1:
                 parsedata = data[3:]
                 parsedata = parsedata.split(",")
-                print(f"test:{parsedata}")
+                # print(f"test:{parsedata}")
                 for item in parsedata:
-                    if item.find("L") > -1 and index == 0: # Appends to FWD_0
+                    if item.find("F") > -1 and index == 0: # Appends to FWD_0
                         textBrowser.clear()
-                        # opposite = not(not(int(item[2:]))) # :))))))) HAHAHAHAHAHAHA
-                        # textBrowser.setText(str(opposite))
-                    if item.find("L") > -1 and index == 1: # Appends to REV_0
+                        print(f"test:{item[1:]}")
+                        opposite = not(not(int(item[1:]))) # :))))))) HAHAHAHAHAHAHA
+                        textBrowser.setText(str(opposite))
+                        if opposite:
+                            textBrowser.setStyleSheet(self.truestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
+                        else:
+                            textBrowser.setStyleSheet(self.falsestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
+                    if item.find("R") > -1 and index == 1: # Appends to REV_0
                         textBrowser.clear()
-                        # opposite = not(int(item[2:]))
-                        # textBrowser.setText(str(opposite))
-
-                    if item.find("R") > -1 and index == 2: # Appends to TURNRIGHT (turn right)
+                        print(f"test:{item[1:]}")
+                        opposite = not (not (int(item[1:])))  # :))))))) HAHAHAHAHAHAHA
+                        textBrowser.setText(str(opposite))
+                        if opposite:
+                            textBrowser.setStyleSheet(self.truestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
+                        else:
+                            textBrowser.setStyleSheet(self.falsestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
+                    if item.find("L") > -1 and index == 2: # Appends to TURNLEFT
                         textBrowser.clear()
-                        textBrowser.setStyleSheet('background-color: rgb(212, 57, 57);')
-                    if item.find("R") > -1 and index == 3: # Appends to TURNLEFT (turn left)
+                        print(f"test:{item[1:]}")
+                        opposite = not (not (int(item[1:])))  # :))))))) HAHAHAHAHAHAHA
+                        textBrowser.setText(str(opposite))
+                        if opposite:
+                            textBrowser.setStyleSheet(self.truestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
+                        else:
+                            textBrowser.setStyleSheet(self.falsestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
+                    if item.find("R") > -1 and index == 3: # Appends to TURNRIGHT
                         textBrowser.clear()
-                        textBrowser.setStyleSheet('background-color: rgb(40, 143, 61);')
-
+                        print(f"test:{item[1:]}")
+                        opposite = not (not (int(item[1:])))  # :))))))) HAHAHAHAHAHAHA
+                        textBrowser.setText(str(opposite))
+                        if opposite:
+                            textBrowser.setStyleSheet(self.truestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
+                        else:
+                            textBrowser.setStyleSheet(self.falsestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
                     if item.find("A") > -1 and index == 4: # Appends to FRONTLIGHTS
                         textBrowser.clear()
                     if item.find("B") > -1 and index == 5: # Appends to BRAKELIGHTS
                         textBrowser.clear()
-                    if item.find("A") > -1 and index == 6:  # Appends to Arm_0
+                    if item.find("obs") > -1 and index == 6:  # Appends to CollisionDet
                         textBrowser.clear()
-                        # textBrowser.setText(item[2:])
-                    if item.find("B") > -1 and index == 7:  # Appends to Arm_1
+                        print(f"test:{item[3:]}")
+                        opposite = not (not (int(item[3:])))  # :))))))) HAHAHAHAHAHAHA
+                        textBrowser.setText(str(opposite))
+                        if opposite:
+                            textBrowser.setStyleSheet(self.truestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
+                        else:
+                            textBrowser.setStyleSheet(self.falsestyle)
+                            textBrowser.setAlignment(Qt.AlignCenter)
+                    if item.find("red") > -1 and index == 7:  # Appends to LineFollowing
                         textBrowser.clear()
-                        # textBrowser.setText(item[2:])
-                    if item.find("S") > -1 and index == 8: # Appends to Servo
+                        textBrowser.setText("Red")
+                        textBrowser.setStyleSheet('background-color: red; text-align:center;')
+                        textBrowser.setAlignment(Qt.AlignCenter)
+                    if item.find("blue") > -1 and index == 7:  # Appends to LineFollowing
+                        textBrowser.clear()
+                        textBrowser.setText("Blue")
+                        textBrowser.setStyleSheet('background-color: blue; text-align:center;')
+                        textBrowser.setAlignment(Qt.AlignCenter)
+                    if item.find("yellow") > -1 and index == 7:  # Appends to LineFollowing
+                        textBrowser.clear()
+                        textBrowser.setText("Yellow")
+                        textBrowser.setStyleSheet('background-color: yellow; text-align:center; color: black;')
+                        textBrowser.setAlignment(Qt.AlignCenter)
+                    if item.find("none") > -1 and index == 7:  # Appends to LineFollowing
+                        textBrowser.clear()
+                        textBrowser.setText("None")
+                        textBrowser.setStyleSheet('background-color: rgb(27, 29, 35); text-align:center;')
+                        textBrowser.setAlignment(Qt.AlignCenter)
+                    if item.find("S") > -1 and index == 8: # Appends to Ambient
                         textBrowser.clear()
             elif index == len(self.textBrowserList) - 1:
                 textBrowser.append(f"{data}")
@@ -195,7 +313,7 @@ class Worker(QObject):
             self.mqttc.on_subscribe = self.on_subscribe
             # Uncomment to enable debug messages
             # mqttc.on_log = self.on_log
-            self.mqttc.connect("192.168.1.154", 1883, 60)
+            self.mqttc.connect("192.168.1.61", 1883, 60)
             self.mqttc.subscribe("test")
             self.mqttc.loop_start()
         except Exception as e:
