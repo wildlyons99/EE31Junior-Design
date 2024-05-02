@@ -5,6 +5,9 @@
 //             Analog pins                    //
 ////////////////////////////////////////////////
 
+// Battery out
+#define batteryOut A0
+
 // Ambient Light
 #define photoresistor_pin A2
 // Collision Detection

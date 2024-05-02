@@ -44,8 +44,13 @@ void loop()
     delay(750);
 
     // begin challenge 1
+
+    const char forward[] = "$$$F1"; 
+
+    send_mqtt(forward); 
     // drive pretty much straigh to the wall until detects collision
     drive_forward();
+
 
     // keep driving until collision detected
     while (!obsticle())
@@ -53,6 +58,9 @@ void loop()
 
     // then stop
     stop_all();
+    
+    const char forward_stop[] = "$$$F0"; 
+    send_mqtt(forward_stop); 
 
     Serial.println("Obsticle");
 
@@ -60,8 +68,11 @@ void loop()
 
     // turn around and go back until find the red line
     turn_left(turn_right_180);
+    
+    send_mqtt(forward); 
 
     drive_forward();
+    send_mqtt(forward_stop);
 
     while (detectColor() != Blue)
         ;
@@ -84,7 +95,13 @@ void loop()
         delay(200); 
     }
 
+    const char blue[] = "$$$blue"; 
+    send_mqtt(blue); 
+
     follow_line(Blue);
+
+    const char none[] = "$$$none"; 
+    send_mqtt(none);
 
     // After stopping at wall, THEN
     digitalWrite(redStatus, LOW); // set LED low to allow for blinking
@@ -124,7 +141,13 @@ void loop()
     delay(100);
     digitalWrite(yellowStatus, HIGH);
 
+    const char yellow[] = "$$$yellow"; 
+    send_mqtt(yellow); 
+
+    // follow the yellow line
     follow_line(Yellow);
+
+    send_mqtt(none); 
 
     // Tell bot 2 to continue
 

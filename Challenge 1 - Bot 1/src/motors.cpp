@@ -5,6 +5,8 @@
 
 #include <motors.h>
 
+#include "wifi_comm.h"
+
 // A is right 
 // B is left
 
@@ -61,6 +63,8 @@ void go_forward(int delay_time)
 
 void go_backwards(int delay_time)
 {
+    const char backwards[] = "$$$B1"; 
+    send_mqtt(backwards); 
     analogWrite(motorA1, backwardMotorSpeedA);
     analogWrite(motorA2, LOW);
     analogWrite(motorB1, LOW);
@@ -68,10 +72,14 @@ void go_backwards(int delay_time)
 
     delay(delay_time);
     stop_all();
+    const char stop_backwards[] = "$$$B0"; 
+    send_mqtt(stop_backwards); 
 }
 
 void turn_right(int delay_time)
 {
+    const char right[] = "$$$R1"; 
+    send_mqtt(right); 
     analogWrite(motorA1, turnRightMotorSpeedA);
     analogWrite(motorA2, LOW);
     analogWrite(motorB1, turnRightMotorSpeedB);
@@ -79,10 +87,15 @@ void turn_right(int delay_time)
 
     delay(delay_time);
     stop_all();
+
+    const char stop_right[] = "$$$R0"; 
+    send_mqtt(stop_right); 
 }
 
 void turn_left(int delay_time)
 {
+    const char left[] = "$$$L1"; 
+    send_mqtt(left); 
     analogWrite(motorA1, LOW);
     analogWrite(motorA2, turnRightMotorSpeedA);
     analogWrite(motorB1, LOW);
@@ -90,6 +103,9 @@ void turn_left(int delay_time)
 
     delay(delay_time);
     stop_all();
+
+    const char stop_left[] = "$$$L0"; 
+    send_mqtt(stop_left); 
 }
 
 void stop_all()

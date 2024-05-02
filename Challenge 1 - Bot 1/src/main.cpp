@@ -8,6 +8,7 @@
 #include "color_detection.h"
 #include "follow_line.h"
 #include "wifi_comm.h"
+#include "batteryadc.h"
 
 const int turn_right_180 = 1050;
 
@@ -23,6 +24,11 @@ void setup()
     wifi_connect(); 
 
     Serial.println("Connected!"); 
+
+    int motorPercent = getPercent(6.0, 9.0, batteryOut);
+    Serial.print("Motor: ");
+    Serial.print(motorPercent);
+    Serial.print("%\n");
 
     // flash blue and red LEDs three times - successfully diagnostics
     for (int i = 0; i < 3; i++) {

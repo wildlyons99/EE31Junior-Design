@@ -8,7 +8,18 @@
 
 #include <SPI.h>
 #include <WiFiNINA.h>
+#include <MQTT.h>
+
+// out helper libs
 #include "arduino_secrets.h"
+#include "wifi_comm.h"
+
+// defining wifi client
+WiFiClient client2;
+
+// mqqt client
+MQTTClient mqtt;
+
 
 char ssid[] = SECRET_SSID;    // network SSID (name)
 char pass[] = SECRET_PASS;    // network password 
@@ -39,48 +50,45 @@ char server[] = "ee31.ece.tufts.edu";    // name address for (using DNS)
 // // char getRoute[] = "GET /89C87865077A/A20F65BA5E3C HTTP/1.1"; 
 // char getRoute[] = "GET /A20F65BA5E3C/89C87865077A HTTP/1.1";
 
-// defining client
-WiFiClient client;
-
 void printWifiStatus() {
-  // print the SSID of the network you're attached to:
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
-  // print your board's IP address:
-  IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
-  Serial.println(ip);
+    // print the SSID of the network you're attached to:
+    Serial.print("SSID: ");
+    Serial.println(WiFi.SSID());
+    // print your board's IP address:
+    IPAddress ip = WiFi.localIP();
+    Serial.print("IP Address: ");
+    Serial.println(ip);
 }
 
 // post message from sender to the receiver
 void POSTServer(const char theRoute[], char *bodyMessage) {
-  if (client.connect(server, portNumber)) {
-    client.println(theRoute);
-    client.print("Host: ");
-    client.println(server);
-    client.println("Content-Type: application/x-www-form-urlencoded");
-    client.print("Content-Length: ");
-    int postBodyLength = strlen(bodyMessage);
-    client.println(postBodyLength);
-    client.println(); // end HTTP header
-    client.print(bodyMessage);
+    if (client2.connect(server, portNumber)) {
+        client2.println(theRoute);
+        client2.print("Host: ");
+        client2.println(server);
+        client2.println("Content-Type: application/x-www-form-urlencoded");
+        client2.print("Content-Length: ");
+        int postBodyLength = strlen(bodyMessage);
+        client2.println(postBodyLength);
+        client2.println(); // end HTTP header
+        client2.print(bodyMessage);
 
-    delay(200);
+        delay(200);
 
-    // print out the client response
-    while (client.connected()) {
-      if (client.available()) {
-        // read an incoming byte from the server and print it to serial monitor:
-        char c = client.read();
-        Serial.print(c);
-      }
+        // print out the client response
+        while (client2.connected()) {
+            if (client2.available()) {
+                // read an incoming byte from the server and print it to serial monitor:
+                char c = client2.read();
+                Serial.print(c);
+            }
+        }
+
+        // the server's disconnected, stop the client:
+        client2.stop();
+        Serial.println();
+        Serial.println("disconnected");
     }
-
-    // the server's disconnected, stop the client:
-    client.stop();
-    Serial.println();
-    Serial.println("disconnected");
-  }
 }
 
 /* GETServer
@@ -88,14 +96,14 @@ void POSTServer(const char theRoute[], char *bodyMessage) {
  *  Get a message from the sever 
  */ 
 void GETServer(const char theRoute[], char *message) {
-  if (client.connect(server, portNumber)) {
+  if (client2.connect(server, portNumber)) {
     // Serial.println("In get server"); 
     // Make a HTTP GET request:
-    client.println(theRoute);
-    client.print("Host: ");
-    client.println(server);
-    client.println("Connection: close");
-    client.println();
+    client2.println(theRoute);
+    client2.print("Host: ");
+    client2.println(server);
+    client2.println("Connection: close");
+    client2.println();
 
     delay(200);
 
@@ -103,10 +111,10 @@ void GETServer(const char theRoute[], char *message) {
     int messageIndex = 0;
 
     // print out the client response
-    while (client.connected()) {
-      if (client.available()) {
+    while (client2.connected()) {
+      if (client2.available()) {
         // read an incoming byte from the server and print it to serial monitor:
-        char c = client.read();
+        char c = client2.read();
         message[messageIndex++] = c;
         // Check if the buffer is full
         int buffer_size = 512; 
@@ -120,7 +128,7 @@ void GETServer(const char theRoute[], char *message) {
     message[messageIndex] = '\0';
 
     // the server's disconnected, stop the client:
-    client.stop();
+    client2.stop();
     Serial.println();
     Serial.println("disconnected");
   }
@@ -130,28 +138,50 @@ void GETServer(const char theRoute[], char *message) {
 // char messageData[2056];
 
 void wifi_connect() {
-  // check for the WiFi module:
-  if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFi module failed!");
-    // don't continue
-    while (true);
-  }
+    // check for the WiFi module:
+    if (WiFi.status() == WL_NO_MODULE) {
+        Serial.println("Communication with WiFi module failed!");
+        // don't continue
+        while (true);
+    }
 
-  // attempt to connect to Wifi network:
-  while (status != WL_CONNECTED) {
-    Serial.print("Connecting to SSID: ");
-    Serial.println(ssid);
-    
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.begin(ssid, pass);
-    
-    // wait 10 seconds for connection:
-    delay(5000);
-  }
+    // attempt to connect to Wifi network:
+    while (status != WL_CONNECTED) {
+        Serial.print("Connecting to SSID: ");
+        Serial.println(ssid);
+        
+        // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+        status = WiFi.begin(ssid, pass);
+        
+        // wait 10 seconds for connection:
+        delay(5000);
+    }
 
-  Serial.println("Connected to wifi");
-  printWifiStatus();
-  Serial.println("\nStarting connection to server...");
+    Serial.println("Connected to wifi");
+    printWifiStatus();
+    Serial.println("\nStarting connection to server...");
+
+    mqtt.begin("192.168.1.61", client2);
+
+    // connect to MQTT Service
+    Serial.println("Connecting to mqtt"); 
+    while (!mqtt.connect("arduino", "public", "public")) {
+        Serial.print(".");
+        delay(500);
+    }
+
+    Serial.println("\nconnected to mqtt!");
+
+    // mqtt.subscribe("/test");
+
+    mqtt.publish("test", "Connected Sucessfully!");
+    Serial.println("Mqtt..."); 
+
+    while(1); 
+}
+
+void send_mqtt(const char msg[]) {
+    mqtt.publish("test", msg);
 }
 
 // void example_send_get() {
