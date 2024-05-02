@@ -217,27 +217,7 @@ QPushButton:disabled {
 	border-radius: 5px;	
 	background-color: rgb(39, 44, 54);
 	color: white;
-}</string>
-     </property>
-     <property name="title">
-      <string>Setup Info</string>
-     </property>
-     <widget class="QTextBrowser" name="textBrowserLogging">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>22</y>
-        <width>561</width>
-        <height>90</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QTextBrowser {
-	background-color: rgb(27, 29, 35);
-	border-radius: 5px;
-	border: 2px solid rgb(27, 29, 35);
 }
-
 /* VERTICAL SCROLLBAR */
  QScrollBar:vertical {
 	border: none;
@@ -300,6 +280,26 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
 }
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 	background: none;
+}
+</string>
+     </property>
+     <property name="title">
+      <string>Setup Info</string>
+     </property>
+     <widget class="QTextBrowser" name="textBrowserLogging">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>22</y>
+        <width>561</width>
+        <height>90</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTextBrowser {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
 }</string>
       </property>
       <property name="html">
@@ -314,7 +314,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QGroupBox" name="groupBoxDCLeft">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>40</x>
        <y>540</y>
        <width>151</width>
        <height>111</height>
@@ -328,7 +328,7 @@ p, li { white-space: pre-wrap; }
 }</string>
      </property>
      <property name="title">
-      <string>DC Left</string>
+      <string>Drive Direction</string>
      </property>
      <widget class="QFrame" name="frameDCLeft">
       <property name="geometry">
@@ -352,7 +352,7 @@ border-radius: 5px;</string>
       <widget class="QLabel" name="labelFWD_0">
        <property name="geometry">
         <rect>
-         <x>4</x>
+         <x>7</x>
          <y>13</y>
          <width>30</width>
          <height>20</height>
@@ -364,7 +364,7 @@ border-radius: 5px;</string>
         </font>
        </property>
        <property name="text">
-        <string>FWD:</string>
+        <string>FWD</string>
        </property>
       </widget>
       <widget class="QTextBrowser" name="textBrowserREV_0">
@@ -405,7 +405,7 @@ border-radius: 5px;</string>
       <widget class="QLabel" name="labelREV_0">
        <property name="geometry">
         <rect>
-         <x>5</x>
+         <x>10</x>
          <y>52</y>
          <width>30</width>
          <height>20</height>
@@ -417,15 +417,15 @@ border-radius: 5px;</string>
         </font>
        </property>
        <property name="text">
-        <string>REV:</string>
+        <string>REV</string>
        </property>
       </widget>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBoxDCRight">
+    <widget class="QGroupBox" name="groupBoxTURNING">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>200</x>
        <y>540</y>
        <width>151</width>
        <height>111</height>
@@ -439,9 +439,9 @@ border-radius: 5px;</string>
 }</string>
      </property>
      <property name="title">
-      <string>DC Right</string>
+      <string>Turning</string>
      </property>
-     <widget class="QFrame" name="frameDCRight">
+     <widget class="QFrame" name="frameTURNING">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -460,10 +460,10 @@ border-radius: 5px;</string>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="labelFWD_2">
+      <widget class="QLabel" name="labelTURNRIGHT">
        <property name="geometry">
         <rect>
-         <x>4</x>
+         <x>5</x>
          <y>13</y>
          <width>30</width>
          <height>20</height>
@@ -475,10 +475,10 @@ border-radius: 5px;</string>
         </font>
        </property>
        <property name="text">
-        <string>FWD:</string>
+        <string>Right</string>
        </property>
       </widget>
-      <widget class="QTextBrowser" name="textBrowserREV_2">
+      <widget class="QTextBrowser" name="textBrowserTURNLEFT">
        <property name="geometry">
         <rect>
          <x>42</x>
@@ -495,7 +495,7 @@ border-radius: 5px;</string>
 }</string>
        </property>
       </widget>
-      <widget class="QTextBrowser" name="textBrowserFWD_2">
+      <widget class="QTextBrowser" name="textBrowserTURNRIGHT">
        <property name="geometry">
         <rect>
          <x>42</x>
@@ -513,10 +513,10 @@ border-radius: 5px;</string>
 </string>
        </property>
       </widget>
-      <widget class="QLabel" name="labelREV_2">
+      <widget class="QLabel" name="labelTURNLEFT">
        <property name="geometry">
         <rect>
-         <x>5</x>
+         <x>13</x>
          <y>52</y>
          <width>30</width>
          <height>20</height>
@@ -528,7 +528,7 @@ border-radius: 5px;</string>
         </font>
        </property>
        <property name="text">
-        <string>REV:</string>
+        <string>Left</string>
        </property>
       </widget>
      </widget>
@@ -685,16 +685,6 @@ border-radius: 5px;</string>
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="armmpl" native="true">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>250</y>
-       <width>120</width>
-       <height>80</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="groupBoxClaw">
      <property name="geometry">
       <rect>
@@ -771,27 +761,29 @@ border-radius: 5px;</string>
       </widget>
      </widget>
     </widget>
-    <widget class="QLabel" name="testImage_2">
+    <widget class="QLabel" name="sideView">
      <property name="geometry">
       <rect>
-       <x>45</x>
+       <x>90</x>
        <y>20</y>
        <width>361</width>
        <height>241</height>
       </rect>
      </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
      <property name="styleSheet">
       <string notr="true">image: url(:/sideView/Phase05-bot-side-view.png);
 color: transparent;
 background-color: transparent;
-border-radius: 5px;
 </string>
      </property>
      <property name="text">
       <string>sideview</string>
      </property>
     </widget>
-    <widget class="QLabel" name="testImage_3">
+    <widget class="QLabel" name="frontView">
      <property name="geometry">
       <rect>
        <x>-30</x>
@@ -800,25 +792,30 @@ border-radius: 5px;
        <height>250</height>
       </rect>
      </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
      <property name="styleSheet">
       <string notr="true">image: url(:/frontView/Phase05-bot-front-view.png);
 color: transparent;
 background-color: transparent;
-border-radius: 5px;
-</string>
+border-radius: 5px;</string>
      </property>
      <property name="text">
       <string>frontview</string>
      </property>
     </widget>
-    <widget class="QLabel" name="testImage_4">
+    <widget class="QLabel" name="backView">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>220</x>
        <y>250</y>
        <width>351</width>
        <height>251</height>
       </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
      </property>
      <property name="styleSheet">
       <string notr="true">image: url(:/backView/Phase05-bot-back-view.png);
@@ -831,11 +828,135 @@ border-radius: 5px;
       <string>backview</string>
      </property>
     </widget>
+    <widget class="QGroupBox" name="groupBoxLIGHTS">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>540</y>
+       <width>151</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QGroupBox {
+	border-radius: 5px;	
+	background-color: rgb(39, 44, 54);
+	color: white;
+}</string>
+     </property>
+     <property name="title">
+      <string>Lights</string>
+     </property>
+     <widget class="QFrame" name="frameLIGHTS">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>16</y>
+        <width>141</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: transparent;
+border-radius: 5px;</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="labelFRONTLIGHTS">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>13</y>
+         <width>30</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>Front</string>
+       </property>
+      </widget>
+      <widget class="QTextBrowser" name="textBrowserBRAKELIGHTS">
+       <property name="geometry">
+        <rect>
+         <x>42</x>
+         <y>50</y>
+         <width>81</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTextBrowser {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+}</string>
+       </property>
+      </widget>
+      <widget class="QTextBrowser" name="textBrowserFRONTLIGHTS">
+       <property name="geometry">
+        <rect>
+         <x>42</x>
+         <y>10</y>
+         <width>81</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTextBrowser {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+}
+</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelBRAKELIGHTS">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>52</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>Brake</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <zorder>groupBoxSerialCommands</zorder>
+    <zorder>groupBoxSetupInfo</zorder>
+    <zorder>groupBoxDCLeft</zorder>
+    <zorder>groupBoxTURNING</zorder>
+    <zorder>groupBoxArm_0</zorder>
+    <zorder>groupBoxArm_1</zorder>
+    <zorder>groupBoxClaw</zorder>
+    <zorder>frontView</zorder>
+    <zorder>backView</zorder>
+    <zorder>groupBoxLIGHTS</zorder>
+    <zorder>sideView</zorder>
+    <zorder>testImage</zorder>
    </widget>
   </widget>
  </widget>
  <resources>
   <include location="imageresources/bot-back-view.qrc"/>
+  <include location="imageresources/test.qrc"/>
   <include location="imageresources/bot-front-view.qrc"/>
   <include location="imageresources/hunter.qrc"/>
   <include location="imageresources/bot-side-view.qrc"/>

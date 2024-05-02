@@ -6,6 +6,7 @@ import hunter
 import frontview
 import backview
 import sideview
+import testimage
 
 # import serial
 from time import sleep
@@ -25,7 +26,8 @@ class UiMainWindow(QtWidgets.QMainWindow):
         self.setWindowIcon(icon)
 
         self.textBrowserList = [self.textBrowserFWD_0, self.textBrowserREV_0,
-                                self.textBrowserFWD_2, self.textBrowserREV_2,
+                                self.textBrowserTURNLEFT, self.textBrowserTURNRIGHT,
+                                self.textBrowserFRONTLIGHTS, self.textBrowserBRAKELIGHTS,
                                 self.textBrowserArm_0, self.textBrowserArm_2,
                                 self.textBrowserServo,
                                 self.textBrowserLogging]
@@ -50,7 +52,11 @@ class MQTTHelper:
         self.stop_btn = stop_btn
 
         for textBrowser in self.textBrowserList:
-            textBrowser.insertPlainText("Awaiting user input! :D")
+            textBrowser.insertPlainText("n/a")
+
+        self.textBrowserList[len(self.textBrowserList) - 1].clear()
+        self.textBrowserList[len(self.textBrowserList) - 1].append(
+            f"<html><i>Awaiting user input! :D</i></html>")
 
         self.thread = None
         self.worker = None
@@ -81,31 +87,32 @@ class MQTTHelper:
                 for item in parsedata:
                     if item.find("L") > -1 and index == 0: # Appends to FWD_0
                         textBrowser.clear()
-                        opposite = not(not(int(item[2:]))) # :))))))) HAHAHAHAHAHAHA
-                        textBrowser.setText(str(opposite))
+                        # opposite = not(not(int(item[2:]))) # :))))))) HAHAHAHAHAHAHA
+                        # textBrowser.setText(str(opposite))
                     if item.find("L") > -1 and index == 1: # Appends to REV_0
                         textBrowser.clear()
-                        opposite = not(int(item[2:]))
-                        textBrowser.setText(str(opposite))
+                        # opposite = not(int(item[2:]))
+                        # textBrowser.setText(str(opposite))
 
-                    if item.find("R") > -1 and index == 2: # Appends to FWD_2
+                    if item.find("R") > -1 and index == 2: # Appends to TURNRIGHT (turn right)
                         textBrowser.clear()
-                        opposite = not(not(int(item[2:]))) # :))))))) HAHAHAHAHAHAHA
-                        textBrowser.setText(str(opposite))
-                    if item.find("R") > -1 and index == 3: # Appends to REV_2
+                        textBrowser.setStyleSheet('background-color: rgb(212, 57, 57);')
+                    if item.find("R") > -1 and index == 3: # Appends to TURNLEFT (turn left)
                         textBrowser.clear()
-                        opposite = not(int(item[2:]))
-                        textBrowser.setText(str(opposite))
+                        textBrowser.setStyleSheet('background-color: rgb(40, 143, 61);')
 
-                    if item.find("A") > -1 and index == 4: # Appends to Arm_0
+                    if item.find("A") > -1 and index == 4: # Appends to FRONTLIGHTS
                         textBrowser.clear()
-                        textBrowser.setText(item[2:])
-                    if item.find("B") > -1 and index == 5: # Appends to Arm_1
+                    if item.find("B") > -1 and index == 5: # Appends to BRAKELIGHTS
                         textBrowser.clear()
-                        textBrowser.setText(item[2:])
-                    if item.find("S") > -1 and index == 6: # Appends to Servo
+                    if item.find("A") > -1 and index == 6:  # Appends to Arm_0
                         textBrowser.clear()
-                        textBrowser.setText(item[2:])
+                        # textBrowser.setText(item[2:])
+                    if item.find("B") > -1 and index == 7:  # Appends to Arm_1
+                        textBrowser.clear()
+                        # textBrowser.setText(item[2:])
+                    if item.find("S") > -1 and index == 8: # Appends to Servo
+                        textBrowser.clear()
             elif index == len(self.textBrowserList) - 1:
                 textBrowser.append(f"{data}")
             index += 1
@@ -119,7 +126,8 @@ class MQTTHelper:
         if self.worker is None:
             self.start_btn.setEnabled(False)
             self.stop_btn.setEnabled(True)
-            self.textBrowserList[len(self.textBrowserList) - 1].append(f"<html><b>Connecting and subscribing to MQTT thread!</b</html>")
+            self.textBrowserList[len(self.textBrowserList) - 1].append(f"<html><b>Connecting and subscribing to MQTT"
+                                                                       f" thread!</b></html>")
             print("starting thread!")
             self.thread = QThread()
             self.worker = Worker()
@@ -147,7 +155,8 @@ class MQTTHelper:
         :return:
         """
         print("calling stop_worker")
-        self.textBrowserList[len(self.textBrowserList) - 1].append("<html><b>Disconnecting and unsubscribing from  MQTT thread!</b</html>")
+        self.textBrowserList[len(self.textBrowserList) - 1].append("<html><b>Disconnecting and unsubscribing from  MQTT"
+                                                                   " thread!</b></html>")
         if self.worker is not None:
             self.start_btn.setEnabled(True)
             self.stop_btn.setEnabled(False)
