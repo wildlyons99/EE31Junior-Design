@@ -32,7 +32,7 @@ bool obsticle() {
     // Serial.print(F("Senor value: ")); Serial.println(sensorValue); 
     // Serial.print(F("Voltage value: ")); Serial.println(voltage); 
 
-    if (voltage >= bigger) {
+    if (voltage >= THREE_INCH_VOLTAGE) {
         // Serial.println("Collision Detected"); 
         return true; 
     } else {

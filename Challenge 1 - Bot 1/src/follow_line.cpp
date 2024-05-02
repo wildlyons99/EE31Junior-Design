@@ -15,7 +15,7 @@
 #include "motors.h"
 
 // update values accordingly
-const int turn_speed = 70; 
+const int turn_speed = 80; 
 
 /* follow line
  * Purpose:   
@@ -27,20 +27,26 @@ const int turn_speed = 70;
  *  - Begins with a left turn
  */
 void follow_line(enum colors color) {
-    turn_left(100); 
+    turn_left(400); 
     
     while (!obsticle()) {
         if (detectColor() == color) {
             // pivot_left
             analogWrite(motorA1, LOW); // a is right motor
             analogWrite(motorA2, turn_speed);
-            delay(150); 
-            stop_all(); 
+            analogWrite(motorB1, LOW);
+            analogWrite(motorB2, LOW);
+            //delay(50); 
+            // delay(100); 
+            // stop_all(); 
         } else {
+            analogWrite(motorA1, LOW); // a is right motor
+            analogWrite(motorA2, LOW);
             analogWrite(motorB1, turn_speed);
             analogWrite(motorB2, LOW);
-            delay(150); 
-            stop_all(); 
+            //delay(50); 
+            // delay(100); 
+            // stop_all(); 
         }
         delay(10); 
     }

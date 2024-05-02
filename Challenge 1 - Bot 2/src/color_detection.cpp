@@ -5,7 +5,6 @@
 #include <Arduino.h>
 #include <color_detection.h>
 
-const int blueRedFreq = 50;
 
 float blueValue = 0.0;
 float redValue = 0.0;
