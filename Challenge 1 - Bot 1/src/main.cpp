@@ -22,6 +22,8 @@ void setup()
 
     wifi_connect(); 
 
+    Serial.println("Connected!"); 
+
 
     // flash blue and red LEDs three times - successfully diagnostics
     for (int i = 0; i < 3; i++) {
@@ -42,100 +44,100 @@ void loop()
     detectColor();
     delay(750);
 
-    // begin challenge 1
-    // drive pretty much straigh to the wall until detects collision
-    drive_forward();
+    // // begin challenge 1
+    // // drive pretty much straigh to the wall until detects collision
+    // drive_forward();
 
-    // keep driving until collision detected
-    while (!obsticle())
-        delay(100);
+    // // keep driving until collision detected
+    // while (!obsticle())
+    //     delay(100);
 
-    // then stop
-    stop_all();
+    // // then stop
+    // stop_all();
 
-    Serial.println("Obsticle");
+    // Serial.println("Obsticle");
 
-    delay(1000);
+    // delay(1000);
 
-    // turn around and go back until find the red line
-    turn_left(turn_right_180);
+    // // turn around and go back until find the red line
+    // turn_left(turn_right_180);
 
-    drive_forward();
+    // drive_forward();
 
-    while (detectColor() != Red)
-        ;
-    stop_all();
+    // while (detectColor() != Red)
+    //     ;
+    // stop_all();
 
-    // Once bot comes back and finds the red line, blink red light
-    digitalWrite(redStatus, HIGH);
+    // // Once bot comes back and finds the red line, blink red light
+    // digitalWrite(redStatus, HIGH);
 
-    // TRANSMIT LIGHT MESSAGE??? // or pretend while sending wifi 
+    // // TRANSMIT LIGHT MESSAGE??? // or pretend while sending wifi 
 
-    // After recieve message twice
-    // Bot 1 flashes its headlights and brake lights twice  and beeps its horn twice
-    for (int i = 0; i < 2; i++) {
-        digitalWrite(headlights, HIGH); 
-        digitalWrite(brake, HIGH); 
-        honk(); 
-        delay(200); 
-        digitalWrite(headlights, LOW); 
-        digitalWrite(brake, LOW); 
-        delay(200); 
-    }
+    // // After recieve message twice
+    // // Bot 1 flashes its headlights and brake lights twice  and beeps its horn twice
+    // for (int i = 0; i < 2; i++) {
+    //     digitalWrite(headlights, HIGH); 
+    //     digitalWrite(brake, HIGH); 
+    //     honk(); 
+    //     delay(200); 
+    //     digitalWrite(headlights, LOW); 
+    //     digitalWrite(brake, LOW); 
+    //     delay(200); 
+    // }
 
-    follow_line(Red);
+    // follow_line(Red);
 
-    // After stopping at wall, THEN
-    digitalWrite(redStatus, LOW); // set LED low to allow for blinking
-    delay(50); 
-    BlinkRedStatus();
+    // // After stopping at wall, THEN
+    // digitalWrite(redStatus, LOW); // set LED low to allow for blinking
+    // delay(50); 
+    // BlinkRedStatus();
 
-    // blinks its red LED and signals Bot 2. Bot 2 upon  receipt blinks its red LED.
-    // Bot 2 signals back to Bot 1, Bot 1 blinks its red LED three  times, turns off the red LED and illuminates a green LED. 
+    // // blinks its red LED and signals Bot 2. Bot 2 upon  receipt blinks its red LED.
+    // // Bot 2 signals back to Bot 1, Bot 1 blinks its red LED three  times, turns off the red LED and illuminates a green LED. 
 
     
-    // blinks its red LED and signals Bot 2. 
-    // Bot 2 signals back to Bot 1, Bot 1 blinks its red LED three  times, turns off the red LED and illuminates a green LED. 
-    BlinkRedStatus(); // After recieving message back
-    BlinkRedStatus();
-    BlinkRedStatus();
-    digitalWrite(greenStatus, HIGH);
+    // // blinks its red LED and signals Bot 2. 
+    // // Bot 2 signals back to Bot 1, Bot 1 blinks its red LED three  times, turns off the red LED and illuminates a green LED. 
+    // BlinkRedStatus(); // After recieving message back
+    // BlinkRedStatus();
+    // BlinkRedStatus();
+    // digitalWrite(greenStatus, HIGH);
 
-    // Communicate with BOT 2, THEN
-    // Once our bot receives message back, THEN
-    headAndRear();
-    honk_times(2);
+    // // Communicate with BOT 2, THEN
+    // // Once our bot receives message back, THEN
+    // headAndRear();
+    // honk_times(2);
 
-    turn_left(turn_right_180 / 2);
+    // turn_left(turn_right_180 / 2);
 
-    // drive forward until get to yellow line
-    drive_forward();
-    while (detectColor() != Yellow)
-        ;
-    stop_all();
+    // // drive forward until get to yellow line
+    // drive_forward();
+    // while (detectColor() != Yellow)
+    //     ;
+    // stop_all();
 
-    // After finding yellow, THEN
-    honk_times(2);
-    digitalWrite(greenStatus, LOW);
-    delay(100);
-    digitalWrite(yellowStatus, HIGH);
+    // // After finding yellow, THEN
+    // honk_times(2);
+    // digitalWrite(greenStatus, LOW);
+    // delay(100);
+    // digitalWrite(yellowStatus, HIGH);
 
-    follow_line(Yellow);
+    // follow_line(Yellow);
 
-    // Tell bot 2 to continue
+    // // Tell bot 2 to continue
 
-    // turn_left()
-    turn_left(turn_right_180 / 2);
+    // // turn_left()
+    // turn_left(turn_right_180 / 2);
 
-    // drive back to wall
-    drive_forward();
-    while (!obsticle())
-        delay(100);
+    // // drive back to wall
+    // drive_forward();
+    // while (!obsticle())
+    //     delay(100);
 
-    stop_all();
+    // stop_all();
 
-    turn_left(turn_right_180);
+    // turn_left(turn_right_180);
 
-    // wait for bot 2 to finish
-    while (1);
+    // // wait for bot 2 to finish
+    // while (1);
 }
