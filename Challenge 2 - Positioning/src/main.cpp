@@ -1,8 +1,12 @@
 #include <Arduino.h>
 
+#include <string.h>
+#include <stdbool.h>
+
 #include "motors.h"
 #include "pins.h"
 #include "light_comm.h"
+#include "wifi_comm.h"
 
 void setup() {
   // put your setup code here, to run once:
@@ -11,6 +15,31 @@ void setup() {
   pinobject.setPins();
   Serial.begin(9600);
   delay(3000);
+}
+
+/* isSubstring
+ * Purpose: 
+ *      Checks if subsring 
+ */
+int isSubstring(char* s1, char* s2)
+{
+    int M = strlen(s1);
+    int N = strlen(s2);
+ 
+    /* A loop to slide pat[] one by one */
+    for (int i = 0; i <= N - M; i++) {
+        int j;
+ 
+        /* For current index i, check for pattern match */
+        for (j = 0; j < M; j++)
+            if (s2[i + j] != s1[j])
+                break;
+ 
+        if (j == M)
+            return i;
+    }
+ 
+    return -1;
 }
 
 /* Challenge 2 Requirements
@@ -25,9 +54,59 @@ void setup() {
   turn right
   turn right
 */
-Light_Comm lightcomm;
+// Light_Comm lightcomm;
+char messageData[515];
+
+int bot_num = 2; 
+
 void loop() {
-  // lightcomm.chall1_receive();
+    wifi_connect(); 
+
+    // format of postRoute: "POST /senderID/receiverID HTTP/1.1"
+    char postRoute[] = "POST /A20F65BA5E3C/89C87865077A HTTP/1.1"; // sending from ourselves to ourselves
+
+    // format of gettRoute: "GET /senderID/receiverID HTTP/1.1"
+    char getRoute[] = "GET /A20F65BA5E3C/89C87865077A HTTP/1.1";
+
+    char message[65]; // Maximum length of message is 64 characters
+
+    // lightcomm.chall1_receive();
+    if (bot_num == 1) {
+        POSTServer(postRoute, "go=false");
+        // dest, source, size
+        memcpy(message, "go=true", 9); 
+    } else if (bot_num == 2) {
+        POSTServer(postRoute, "go=true"); 
+        // dest, source, size
+        memcpy(message, "go=false", 9); 
+    }
+
+    delay(5000); 
+
+    
+    while (isSubstring(message, "go=true") == -1) {
+        GETServer(getRoute, messageData);
+        char *ptr = strstr(messageData, "Success&");
+        
+        if (ptr != NULL) {
+            ptr += strlen("Success&"); // Move pointer to the start of the message
+            
+            // Read the message using strncpy to avoid buffer overflow
+            int length = strcspn(ptr, "\0"); // Find the length of the message until the next space or end of string
+            if (length > 64) // Cap the length at 64 characters
+                length = 64;
+            
+            strncpy(message, ptr, length);
+            message[length] = '\0'; // Null-terminate the string
+            
+            Serial.print("Message: "); Serial.println(message);
+        } else {
+            Serial.print("No message found.\n");
+        }
+
+        delay(500); 
+    }
+    
     unsigned int now = millis(); 
 
     while (millis() - now <= 9800) { // Move forwards 12 inches
@@ -68,6 +147,21 @@ void loop() {
 
         delay(100); 
     }
+
+    if (bot_num == 1) {
+        Serial.println("Sending go!"); 
+        POSTServer(postRoute, "go=true");
+    } else if (bot_num == 2) {
+        POSTServer(postRoute, "go=false"); 
+    } else {
+        Serial.print("uh oh"); 
+        exit(1); 
+    }
+
+    delay(2000); 
+
+    POSTServer(postRoute, "go=false"); 
+    Serial.println("Done with execution"); 
 
     while(1); 
 }
