@@ -171,3 +171,60 @@ void loop() {
 
     while(1); 
 }
+
+
+/* isSubstring
+ * Purpose: 
+ *      Checks if subsring 
+ */
+int isSubstring(char* s1, char* s2)
+{
+    int M = strlen(s1);
+    int N = strlen(s2);
+ 
+    /* A loop to slide pat[] one by one */
+    for (int i = 0; i <= N - M; i++) {
+        int j;
+ 
+        /* For current index i, check for pattern match */
+        for (j = 0; j < M; j++)
+            if (s2[i + j] != s1[j])
+                break;
+ 
+        if (j == M)
+            return i;
+    }
+ 
+    return -1;
+}
+char messageData[515];
+
+void get_message(char state[]) {
+    // format of gettRoute: "GET /senderID/receiverID HTTP/1.1"
+    char getRoute[] = "GET /A20F65BA5E3C/89C87865077A HTTP/1.1";
+
+    char message[65]; // Maximum length of message is 64 characters
+    
+    while (isSubstring(message, state) == -1) {
+        GETServer(getRoute, messageData);
+        char *ptr = strstr(messageData, "Success&");
+        
+        if (ptr != NULL) {
+            ptr += strlen("Success&"); // Move pointer to the start of the message
+            
+            // Read the message using strncpy to avoid buffer overflow
+            int length = strcspn(ptr, "\0"); // Find the length of the message until the next space or end of string
+            if (length > 64) // Cap the length at 64 characters
+                length = 64;
+            
+            strncpy(message, ptr, length);
+            message[length] = '\0'; // Null-terminate the string
+            
+            Serial.print("Message: "); Serial.println(message);
+        } else {
+            Serial.print("No message found.\n");
+        }
+
+        delay(500); 
+    }
+}

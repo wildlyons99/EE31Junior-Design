@@ -12,8 +12,8 @@
 
 // Set the speed (0 = off and 255 = max speed)
 // will likely need to make seperate motor speed for A and B to match so:
-const int forwardMotorSpeedA = 61; // 50% duty cycle
-const int forwardMotorSpeedB = 64; // 50% duty cycle
+const int forwardMotorSpeedA = 63; // 50% duty cycle
+const int forwardMotorSpeedB = 55; // 50% duty cycle
 
 const int turnRightMotorSpeedA = 65; // 50% duty cycle
 const int turnRightMotorSpeedB = 70; // 50% duty cycle

@@ -63,7 +63,7 @@ enum colors detectColor() {
     } else if(redValue >= 1.6 && redValue < 3 && blueValue >= 1.6 && blueValue <= 3){
         currColor = Blue;
         // Serial.println("BLUE");
-    } else if(redValue >= 3 && redValue < 4.5 && blueValue >= 2.5 && blueValue <= 4.5){
+    } else if(redValue >= 3.5 && redValue < 4.5 && blueValue >= 2.5 && blueValue <= 4){
         currColor = Yellow;
         // Serial.println("YELLOW");
     } else if(redValue >= 3 && redValue <= 4 && blueValue >= 0.5 && blueValue <= 1.6){

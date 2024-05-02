@@ -161,6 +161,7 @@ void wifi_connect() {
     printWifiStatus();
     Serial.println("\nStarting connection to server...");
 
+
     mqtt.begin("192.168.1.61", client2);
 
     // connect to MQTT Service
