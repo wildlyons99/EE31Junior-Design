@@ -1,6 +1,8 @@
 # EE31: Junior Design - Final Project, Go Beyond
 This is the Go Beyond for Team Team Red for EE31.
 The GUI only primarily works with Challenge 1 and if the MQTT code is uncommented.
+![Demo Image of GUI](./GUIDemoImageGitHub.png)
+
 
 The following section is an attempt at explaining how to run the GUI.
 
