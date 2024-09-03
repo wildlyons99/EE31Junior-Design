@@ -2,7 +2,7 @@
 This is the Go Beyond for Team Team Red for EE31.
 The GUI only primarily works with Challenge 1 and if the MQTT code is uncommented.
 <p align="center" width="100%">
-    <img width="65%" src="./GUIDemoImageGitHub.png" alt="Demo Image of GUI">
+    <img width="65%" src="./GUIDemoImage.png" alt="Demo Image of GUI">
 </p>
 The following section is an attempt at explaining how to run the GUI.
 
